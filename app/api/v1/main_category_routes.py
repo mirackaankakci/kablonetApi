@@ -14,4 +14,4 @@ def get_main_category(main_category_id: int):
 @router.post("/", response_model=MainCategoryCreateResponse)
 def add_main_category(main_category_data: MainCategoryCreateResponse):
     created_main_category = create_main_category_service(main_category_data)
-    return 'Ana kategori başarıyla oluşturuldu'
+    return 'Ana kategori başarıyla oluşturulduuuuuu'
