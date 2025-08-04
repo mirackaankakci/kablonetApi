@@ -1,5 +1,6 @@
-fastapi
+fastapi[all]
 uvicorn[standard]
-sqlalchemy
-psycopg2-binary
-python-dotenv
+sqlalchemy[standard]
+psycopg2-binary[standard]
+python-dotenv[standard]
+sqlalchemy.orm[standard]

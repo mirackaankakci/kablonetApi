@@ -6,7 +6,8 @@ class MainCategoryResponse(BaseModel):
     isActive: bool
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
 
 
 class MainCategoryCreateResponse(BaseModel):
@@ -14,12 +15,13 @@ class MainCategoryCreateResponse(BaseModel):
     isActive: bool
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
 
 class MainCategoryUpdateResponse(BaseModel):
     id: int
     name: str
     isActive: bool
-
     class Config:
-        orm_mode = True
+        from_attributes = True
+
