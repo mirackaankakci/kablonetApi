@@ -11,16 +11,12 @@ def get_main_category(main_category_id: int):
         raise HTTPException(status_code=404, detail="Ana kategori bulunamadı")
     return main_category
 
-@router.post("/", response_model=str)
+@router.post("/", response_model=MainCategoryResponse)
 def add_main_category(main_category_data: MainCategoryCreateResponse):
-    return "Ana kategori başarıyla oluşturuldu"
+    try:
+        created_category = create_main_category_service(main_category_data)
+        return created_category
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-# @router.post("/", response_model=MainCategoryCreateResponse)
-# def add_main_category(main_category_data: MainCategoryCreateResponse):
-#     return create_main_category_service(main_category_data)
 
-
-# @router.post("/", response_model=MainCategoryCreateResponse)
-# def add_main_category(main_category_data: MainCategoryCreateResponse):
-#     created_main_category = create_main_category_service(main_category_data)
-#     return 'Ana kategori başarıyla oluşturulduuuuuu'

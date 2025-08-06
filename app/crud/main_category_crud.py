@@ -17,4 +17,4 @@ def create_main_category_from_db(main_category_data):
     db.commit()
     db.refresh(new_main_category)
     db.close()
-    return MainCategory.new_main_category
+    return new_main_category

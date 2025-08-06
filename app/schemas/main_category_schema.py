@@ -12,7 +12,7 @@ class MainCategoryResponse(BaseModel):
 
 class MainCategoryCreateResponse(BaseModel):
     name: str
-    isActive: bool
+    isActive: bool = True  # Varsayılan değer
 
     class Config:
         from_attributes = True
