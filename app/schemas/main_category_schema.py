@@ -8,7 +8,12 @@ class MainCategoryResponse(BaseModel):
     class Config:
         from_attributes = True
 
+class MainCategoryUpdate(BaseModel):
+    name: str
+    isActive: bool
 
+    class Config:
+        from_attributes = True
 
 class MainCategoryCreateResponse(BaseModel):
     name: str

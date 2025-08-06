@@ -18,3 +18,16 @@ def create_main_category_from_db(main_category_data):
     db.refresh(new_main_category)
     db.close()
     return new_main_category
+
+def update_main_category_in_db(main_category_data, main_category_id: int):
+    db: Session = SessionLocal()
+    main_category = db.query(MainCategory).filter(MainCategory.id == main_category_id).first()
+    if not main_category:
+        db.close()
+        return None
+    for key, value in main_category_data.dict().items():
+        setattr(main_category, key, value)
+    db.commit()
+    db.refresh(main_category)
+    db.close()
+    return main_category

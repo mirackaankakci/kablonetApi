@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class KanalListesiResponse(BaseModel):
+class ChannelListResponse(BaseModel):
     # id: int
     kanal_no: int
     kanal_adi: str
@@ -10,7 +10,7 @@ class KanalListesiResponse(BaseModel):
     class Config:
         from_attributes = True
 
-class KanalListesiAllResponse(BaseModel):
+class ChannelListAllResponse(BaseModel):
     id: int
     kanal_no: int
     kanal_adi: str
@@ -20,7 +20,7 @@ class KanalListesiAllResponse(BaseModel):
     class Config:
         from_attributes = True
         
-class KanalListesiCreate(BaseModel):
+class ChannelListCreate(BaseModel):
     kanal_no: int
     kanal_adi: str
     dijital_frekans: str
@@ -30,7 +30,7 @@ class KanalListesiCreate(BaseModel):
         from_attributes = True
 
 
-class KanalListesiUpdate(BaseModel):
+class ChannelListUpdate(BaseModel):
     kanal_no: int
     kanal_adi: str
     dijital_frekans: str

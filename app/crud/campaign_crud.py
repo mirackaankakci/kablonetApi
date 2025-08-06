@@ -22,12 +22,13 @@ def create_campaign_from_db(campaign_data):
 
 
 def update_campaign_from_db(campaign_id: int, campaign_data):
-    campaign_data = db.query(Campaign).filter(Campaign.id == campaign_id).first()
-    if not campaign_data:
+    campaign = db.query(Campaign).filter(Campaign.id == campaign_id).first()
+    if not campaign:
         db.close()
         return None
-    for key, value in campaign_data.items():
-        setattr(campaign_data, key, value)
+    for key, value in campaign_data.dict().items():
+        setattr(campaign, key, value)
     db.commit()
+    db.refresh(campaign)
     db.close()
-    return campaign_data    
+    return campaign
