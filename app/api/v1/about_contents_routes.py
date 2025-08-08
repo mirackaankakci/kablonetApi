@@ -5,6 +5,8 @@ from app.services.about_contents_services import get_about_content_service, crea
 
 router = APIRouter(prefix="/content", tags=["About Contents"])
 
+
+
 @router.get("/{content_id}", response_model=AboutContentsSchema)
 def get_about_content(content_id: int):
     content = get_about_content_service(content_id)

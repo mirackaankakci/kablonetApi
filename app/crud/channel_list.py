@@ -38,8 +38,8 @@ def update_channel_list(channel_id: int, channel_data: dict):
 #channel listeleme işlemi
 def get_all_channel_list(db: Session):
     # db: Session = SessionLocal()
-    # channel_list = db.query(channel_list).all()
-    # db.close()
-    return db.query(channel_list).order_by(channel_list.id).all()
+    channel_list = db.query(channel_list).order_by(channel_list.id).all()
+    db.close()
+    return channel_list
 
 #silme işlemi 

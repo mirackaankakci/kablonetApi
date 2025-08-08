@@ -4,6 +4,11 @@ from sqlalchemy.orm import Session
 from app.db.database import SessionLocal
 
 
+def get_all_main_categories_from_db(db: Session):
+    main_categories = db.query(MainCategory).order_by(MainCategory.id).all()
+    db.close()
+    return main_categories
+
 def get_main_category_by_id_from_db(main_category_id: int):
     db: Session = SessionLocal()
     main_category = db.query(MainCategory).filter(MainCategory.id == main_category_id).first()

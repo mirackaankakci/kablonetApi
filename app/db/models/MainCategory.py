@@ -14,5 +14,6 @@ class MainCategory(Base):
     update_time = Column(DateTime, default=datetime.now, onupdate=datetime.now, nullable=True)
     
     campaigns = relationship("Campaign", back_populates="main_category")
-
-
+    devices = relationship("Devices", back_populates="main_category")
+    about_contents = relationship("About_Contents", back_populates="main_category")
+    tariff_categories = relationship("TariffCategory", back_populates="main_category")###silinecek 

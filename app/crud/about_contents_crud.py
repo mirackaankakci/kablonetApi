@@ -31,3 +31,12 @@ def update_about_content_from_db(about_content_id: int, about_content_data):
     db.refresh(about_content)
     db.close()
     return about_content
+
+def get_all_about_contents_from_db(db: Session):
+    about_contents = db.query(About_Contents).options(
+        joinedload(About_Contents.main_category)
+    ).order_by(About_Contents.id).all()
+    db.close()
+    return about_contents
+
+

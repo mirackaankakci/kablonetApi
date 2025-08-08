@@ -8,5 +8,5 @@ class Tariff(Base):
     id = Column(Integer, primary_key=True, index=True)
     tarifeCategorieId = Column(Integer, ForeignKey("tariff_category.id"), nullable=False)
     
-    tariff_category = relationship("TariffCategory", back_populates="tariff")
+    tariff_category = relationship("TariffCategory", back_populates="tariffs")
     tariffCells = relationship("TariffCell", back_populates="tariff")
