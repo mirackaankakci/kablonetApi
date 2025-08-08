@@ -1,3 +1,9 @@
 from .MainCategory import MainCategory
 from .Campaign import Campaign
-# varsa diğer modelleri de buraya ekle
+from .TariffCategory import TariffCategory
+from .TariffColum import TariffColumn
+from .CategoryColumn import CategoryColumn
+from .TariffCell import TariffCell
+from .TariffValue import TariffValue
+from .Tariff import Tariff
+from .kanal_listesi import kanal_listesi

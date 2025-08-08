@@ -11,5 +11,6 @@ class MainCategory(Base):
     isActive = Column(Boolean, unique=False, index=True, nullable=False, default=True)
     
     campaigns = relationship("Campaign", back_populates="main_category")
+    tariff_categories = relationship("TariffCategory", back_populates="main_category")
 
 
