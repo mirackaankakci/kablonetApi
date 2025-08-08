@@ -4,7 +4,7 @@ from app.db.database import get_db
 from app.services.channel_list_service import get_channel_list_by_id_from_db, create_channel_list_service, update_channel_list_service, get_all_channel_list_service
 from app.schemas.channel_list_schema import ChannelListAllResponse, ChannelListCreate, ChannelListUpdate, ChannelListResponse
 
-router = APIRouter(prefix="/channel-list", tags=["channel List"])
+router = APIRouter(prefix="/channel-list", tags=["Channel List"])
 
 @router.get("/channels", response_model=list[ChannelListAllResponse])
 def list_all_channels(db: Session = Depends(get_db)):
