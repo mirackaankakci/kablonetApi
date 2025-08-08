@@ -1,5 +1,7 @@
 from app.db.database import get_db
 from app.db.models.Campaign import Campaign
+from app.db.models.MainCategory import MainCategory
+from app.db.models.campaign_features import CampaignFeatures
 from sqlalchemy.orm import Session, joinedload
 from app.db.database import SessionLocal
 
@@ -7,7 +9,10 @@ from app.db.database import SessionLocal
 db:Session = SessionLocal()
 
 def get_campaign_by_id_from_db(campaign_id: int):
-    campaign = db.query(Campaign).options(joinedload(Campaign.main_category)).filter(Campaign.id == campaign_id).first()
+    campaign = db.query(Campaign).options(
+        joinedload(Campaign.main_category),
+        joinedload(Campaign.campaign_features)
+        ).filter(Campaign.id == campaign_id).first()
     db.close()
     return campaign
 
