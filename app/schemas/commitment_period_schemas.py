@@ -1,12 +1,12 @@
 from pydantic import BaseModel
 from datetime import datetime as DateTime
 
-class MainCategoryResponse(BaseModel):
+class CommitmentPeriodSchema(BaseModel):
     id: int
-    name: str
-    isActive: bool
+    period: str  # taahüt süresi (örneğin: "12 months")
     add_time: DateTime
     update_time: DateTime
+    is_active: bool
 
     class Config:
         from_attributes = True
@@ -14,45 +14,44 @@ class MainCategoryResponse(BaseModel):
             DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
         
-class MainCategorySchema(BaseModel):
+class PeriodSchema(BaseModel):
     id: int
-    name: str
-    isActive: bool = True  # Varsayılan değer
+    period: str  # taahüt süresi (örneğin: "12 months")
+    is_active: bool
+
     class Config:
         from_attributes = True
-
-
-class MainCategoryCreateResponse(BaseModel):
-    name: str
-    isActive: bool = True  # Varsayılan değer
+        
+class CommitmentPeriodResponse(BaseModel):
+    period: str  # taahüt süresi (örneğin: "12 months")
     add_time: DateTime
-
-    class Config:
-        from_attributes = True
-        json_encoders = {
-            DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
-        }
-
-
-class MainCategoryUpdateResponse(BaseModel):
-    id: int
-    name: str
-    isActive: bool
     update_time: DateTime
+    is_active: bool
+    
     class Config:
         from_attributes = True
         json_encoders = {
             DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
 
-class MainCategoryUpdate(BaseModel):
-    name: str
-    isActive: bool
+class CommitmentPeriodCreateSchema(BaseModel):
+    period: str  # taahüt süresi (örneğin: "12 months")
+    add_time: DateTime
+    is_active: bool = True  # Varsayılan değer
+
+    class Config:
+        from_attributes = True
+        json_encoders = {
+            DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
+        }
+
+class CommitmentPeriodUpdateSchema(BaseModel):
+    period: str  # taahüt süresi (örneğin: "12 months")
     update_time: DateTime
+    is_active: bool
 
     class Config:
         from_attributes = True
         json_encoders = {
             DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
-

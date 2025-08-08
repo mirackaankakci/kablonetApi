@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
-from app.services.main_category_service import get_main_category_by_id, create_main_category_service
-from app.schemas.main_category_schema import MainCategoryResponse, MainCategoryCreateResponse
+from app.services.main_category_service import get_main_category_by_id, create_main_category_service, update_main_category_service
+from app.schemas.main_category_schema import MainCategoryResponse, MainCategoryCreateResponse, MainCategoryUpdateResponse, MainCategoryUpdate
 
 router = APIRouter(prefix="/main-categories", tags=["Main Categories"])
 
@@ -11,7 +11,7 @@ def get_main_category(main_category_id: int):
         raise HTTPException(status_code=404, detail="Ana kategori bulunamadı")
     return main_category
 
-@router.post("/", response_model=MainCategoryResponse)
+@router.post("/new-categories", response_model=MainCategoryCreateResponse)
 def add_main_category(main_category_data: MainCategoryCreateResponse):
     try:
         created_category = create_main_category_service(main_category_data)
@@ -19,4 +19,12 @@ def add_main_category(main_category_data: MainCategoryCreateResponse):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-
+@router.put("/{main_category_id}", response_model=MainCategoryUpdate)
+def update_main_category(main_category_id: int, main_category_data: MainCategoryUpdateResponse):
+    try:
+        updated_category = update_main_category_service(main_category_data, main_category_id)
+        if not updated_category:
+            raise HTTPException(status_code=404, detail="Ana kategori bulunamadı")
+        return updated_category
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
