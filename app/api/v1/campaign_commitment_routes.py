@@ -2,15 +2,22 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.schemas.campaign_commitment_schemas import CampaignCommitmentCreateSchema, CampaignCommitmentUpdateSchema, CampaignCommitmentSchema
-from app.services.campaign_commitment_services import get_campaign_commitment_by_id, create_campaign_commitment_service, update_campaign_commitment_service, get_all_campaign_commitments_service
+from app.services.campaign_commitment_services import get_campaign_commitment_by_id, create_campaign_commitment_service, update_campaign_commitment_service, get_all_campaign_commitments_campaign_service, get_all_campaign_commitments_service
 
 router = APIRouter(prefix="/campaign-commitments", tags=["Campaign Commitments"])
 
-@router.get("/campaign-commitments", response_model=list[CampaignCommitmentSchema])
-def list_all_campaign_commitments(campaign_id: int, db: Session = Depends(get_db)):
-    commitments = get_all_campaign_commitments_service(campaign_id)
+@router.get("/campaign-commitments-device", response_model=list[CampaignCommitmentSchema])
+def list_all_campaign_commitments_campaign(campaign_id: int, db: Session = Depends(get_db)):
+    commitments = get_all_campaign_commitments_campaign_service(campaign_id)
     if not commitments:
         raise HTTPException(status_code=404, detail="No Campaign Commitments found for this campaign")
+    return commitments
+
+@router.get("/campaign-commitments", response_model=list[CampaignCommitmentSchema])
+def list_all_campaign_commitments(db: Session= Depends(get_db)):
+    commitments = get_all_campaign_commitments_service(db)
+    if not commitments:
+        raise HTTPException(status_code=404, detail="No Campaign Commitments found")
     return commitments
 
 @router.get("/{commitment_id}", response_model=CampaignCommitmentSchema)

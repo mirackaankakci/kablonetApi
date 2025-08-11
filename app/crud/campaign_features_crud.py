@@ -9,6 +9,11 @@ def get_campaign_features_by_id_from_db(campaign_features_id: int):
     db.close()
     return campaign_features
 
+def list_all_campaign_features_from_db(db: Session):
+    campaign_features = db.query(CampaignFeatures).order_by(CampaignFeatures.id).all()
+    db.close()
+    return campaign_features
+
 def create_campaign_features_from_db(campaign_features_data):
     db: Session = SessionLocal()
     new_campaign_features = CampaignFeatures(**campaign_features_data.dict())

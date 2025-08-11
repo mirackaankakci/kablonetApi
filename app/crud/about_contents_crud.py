@@ -32,11 +32,19 @@ def update_about_content_from_db(about_content_id: int, about_content_data):
     db.close()
     return about_content
 
+# Get all about contents from the database
 def get_all_about_contents_from_db(db: Session):
     about_contents = db.query(About_Contents).options(
         joinedload(About_Contents.main_category)
     ).order_by(About_Contents.id).all()
     db.close()
     return about_contents
+   
 
-
+## Get all about contents by category from the database
+def get_all_about_contents_by_category_from_db(main_category_id: int):
+    about_contents = db.query(About_Contents).options(
+        joinedload(About_Contents.main_category)
+    ).filter(About_Contents.main_category_id == main_category_id).order_by(About_Contents.id).all()
+    db.close()
+    return about_contents

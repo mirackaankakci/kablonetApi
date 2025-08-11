@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from app.db.database import SessionLocal
 from app.db.models.channel_list import channel_list
 
+
+
 #channel getirme işlemi
 def get_channel_list_by_id(channel_id: int):
     db: Session = SessionLocal()
@@ -12,9 +14,9 @@ def get_channel_list_by_id(channel_id: int):
 
 
 #channel olusturma işlemi
-def create_channel_list(channel_data: dict):
+def create_channel_list(channel_data):
     db: Session = SessionLocal()
-    new_channel = channel_list(**channel_data)
+    new_channel = channel_list(**channel_data.dict())
     db.add(new_channel)
     db.commit()
     db.refresh(new_channel)
@@ -22,13 +24,13 @@ def create_channel_list(channel_data: dict):
     return new_channel
 
 #güncelleme işlemi
-def update_channel_list(channel_id: int, channel_data: dict):
+def update_channel_list(channel_data, channel_id: int):
     db: Session = SessionLocal()
     channel = db.query(channel_list).filter(channel_list.id == channel_id).first()
     if not channel:
         db.close()
         return None
-    for key, value in channel_data.items():
+    for key, value in channel_data.dict().items():
         setattr(channel, key, value)
     db.commit()
     db.refresh(channel)
@@ -37,9 +39,8 @@ def update_channel_list(channel_id: int, channel_data: dict):
 
 #channel listeleme işlemi
 def get_all_channel_list(db: Session):
-    # db: Session = SessionLocal()
-    channel_list = db.query(channel_list).order_by(channel_list.id).all()
+    
+    channel = db.query(channel_list).order_by(channel_list.id).all()
     db.close()
-    return channel_list
+    return channel
 
-#silme işlemi 

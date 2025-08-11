@@ -18,6 +18,16 @@ def get_campaign_commitment_by_id_from_db(commitment_id: int):
     db.close()
     return commitment
 
+def get_all_campaign_commitments_from_db(db: Session):
+    commitment = db.query(CampaignCommitment).options(
+        joinedload(CampaignCommitment.campaign)
+            .joinedload(Campaign.main_category),
+        joinedload(CampaignCommitment.campaign)
+            .joinedload(Campaign.campaign_features),
+        joinedload(CampaignCommitment.commitment_period)
+    ).order_by(CampaignCommitment.id).all()
+    db.close()
+    return commitment
 
 def create_campaign_commitment_from_db(commitment_data):
     new_commitment = CampaignCommitment(**commitment_data.dict())
@@ -39,7 +49,7 @@ def update_campaign_commitment_from_db(commitment_id: int, commitment_data):
     db.close()
     return commitment
 
-def get_all_campaign_commitments_from_db(campaign_id: int):
+def get_all_campaign_commitments_campaign_from_db(campaign_id: int):
     commitments = db.query(CampaignCommitment).options(
         joinedload(CampaignCommitment.campaign)
             .joinedload(Campaign.main_category),

@@ -36,11 +36,20 @@ def update_device_commitment_from_db(device_commitment_id: int, device_commitmen
     db.close()
     return device_commitment
 
-def get_all_device_commitments_from_db(device_id: int):
+def get_all_device_commitments_device_from_db(device_id: int):
     device_commitments = db.query(DeviceCommitment).options(
         joinedload(DeviceCommitment.devices)
             .joinedload(Devices.main_category),
         joinedload(DeviceCommitment.commitment_period)
     ).filter(DeviceCommitment.devices_id == device_id).order_by(DeviceCommitment.id).all()
+    db.close()
+    return device_commitments
+
+def list_all_device_commitments_from_db(db: Session):
+    device_commitments = db.query(DeviceCommitment).options(
+        joinedload(DeviceCommitment.devices)
+            .joinedload(Devices.main_category),
+        joinedload(DeviceCommitment.commitment_period)
+    ).order_by(DeviceCommitment.id).all()
     db.close()
     return device_commitments

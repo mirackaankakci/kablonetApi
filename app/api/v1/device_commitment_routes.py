@@ -2,13 +2,20 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.schemas.device_commitment_schemas import DeviceCommitmentSchema, DeviceCommitmentCreateSchema, DeviceCommitmentUpdateSchema
-from app.services.device_commitment_services import get_device_commitment_by_id, create_device_commitment_service, update_device_commitment_service, get_all_device_commitments_service
+from app.services.device_commitment_services import get_device_commitment_by_id, create_device_commitment_service, update_device_commitment_service, get_all_device_commitments_device_service, list_all_device_commitments_service
 
 router = APIRouter(prefix="/device-commitments", tags=["Device Commitments"])
 
-@router.get("/device-commitments", response_model=list[DeviceCommitmentSchema])
-def list_all_device_commitments(device_id: int, db: Session = Depends(get_db)):
-    device_commitments = get_all_device_commitments_service(device_id)
+@router.get("/", response_model=list[DeviceCommitmentSchema])
+def list_all_device_commitments(db: Session = Depends(get_db)):
+    device_commitments = list_all_device_commitments_service(db)
+    if not device_commitments:
+        raise HTTPException(status_code=404, detail="No Device Commitments found")
+    return device_commitments
+
+@router.get("/device", response_model=list[DeviceCommitmentSchema])
+def list_all_device_commitments_device(device_id: int, db: Session = Depends(get_db)):
+    device_commitments = get_all_device_commitments_device_service(device_id)
     if not device_commitments:
         raise HTTPException(status_code=404, detail="No Device Commitments found for this device")
     return device_commitments

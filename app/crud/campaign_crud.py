@@ -16,6 +16,25 @@ def get_campaign_by_id_from_db(campaign_id: int):
     db.close()
     return campaign
 
+#kategoriye gore kampanya getir
+def get_all_campaigns_by_category_from_db(main_category_id: int):
+    campaigns = db.query(Campaign).options(
+        joinedload(Campaign.main_category),
+        joinedload(Campaign.campaign_features)
+    ).filter(Campaign.main_category_id == main_category_id).order_by(Campaign.id).all()
+    db.close()
+    return campaigns
+
+
+# bütün kampanyaları getir
+def get_all_campaigns_from_db(db: Session):
+    campaigns = db.query(Campaign).options(
+        joinedload(Campaign.main_category),
+        joinedload(Campaign.campaign_features)
+    ).order_by(Campaign.id).all()
+    db.close()
+    return campaigns
+
 
 def create_campaign_from_db(campaign_data):
     new_campaign = Campaign(**campaign_data.dict())
@@ -37,3 +56,4 @@ def update_campaign_from_db(campaign_id: int, campaign_data):
     db.refresh(campaign)
     db.close()
     return campaign
+

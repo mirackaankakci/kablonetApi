@@ -35,7 +35,7 @@ class MainCategoryCreateResponse(BaseModel):
 
 
 class MainCategoryUpdateResponse(BaseModel):
-    id: int
+    # id: int
     name: str
     isActive: bool
     update_time: DateTime

@@ -31,3 +31,7 @@ def update_commitment_period_in_db(commitment_period_data, commitment_period_id:
     db.close()
     return commitment_period
 
+def list_all_commitment_period_from_db(db: Session):
+    commitment_periods = db.query(CommitmentPeriod).order_by(CommitmentPeriod.id).all()
+    db.close()
+    return commitment_periods

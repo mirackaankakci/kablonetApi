@@ -1,8 +1,21 @@
 from fastapi import APIRouter, Depends, HTTPException
-from app.services.campaign_service import get_campaign_by_id, create_campaign_service, update_campaign_service
+from app.services.campaign_service import get_campaign_by_id, create_campaign_service, update_campaign_service, get_all_campaigns_service, get_all_campaigns_by_category_service
+from sqlalchemy.orm import Session
+from app.db.database import get_db
 from app.schemas.campaign_schema import CampaignSchema, CampaignCreateSchema, CampaignUpdateSchema, CampaignUpdateResponse
 
 router = APIRouter(prefix="/campaigns", tags=["Campaigns"])
+
+@router.get("/", response_model=list[CampaignSchema])
+def list_all_campaigns(db: Session = Depends(get_db)):
+    return get_all_campaigns_service(db)
+
+@router.get("/category", response_model=list[CampaignSchema])
+def list_all_campaigns_by_category(main_category_id: int, db: Session = Depends(get_db)):
+    campaigns = get_all_campaigns_by_category_service(main_category_id)
+    if not campaigns:
+        raise HTTPException(status_code=404, detail="No campaigns found for this category")
+    return campaigns
 
 @router.get("/{campaign_id}", response_model=CampaignSchema)
 def get_campaign(campaign_id: int):
