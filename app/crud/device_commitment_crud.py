@@ -37,12 +37,6 @@ def update_device_commitment_from_db(device_commitment_id: int, device_commitmen
     return device_commitment
 
 def get_all_device_commitments_from_db(device_id: int):
-    # device_commitments = db.query(DeviceCommitment).options(
-    #     joinedload(DeviceCommitment.devices)
-    #         .joinedload(Devices.main_category),
-    #     joinedload(DeviceCommitment.commitment_period)
-    # ).order_by(Devices.id).all()
-    # db.close()
     device_commitments = db.query(DeviceCommitment).options(
         joinedload(DeviceCommitment.devices)
             .joinedload(Devices.main_category),

@@ -12,4 +12,8 @@ from .device_commitment import DeviceCommitment
 from .CategoryColumn import CategoryColumn
 from .devices import Devices
 
-
+from .Tariff import Tariff
+from .TariffCategory import TariffCategory
+from .TariffCell import TariffCell
+from .TariffColum import TariffColumn
+from .TariffValue import TariffValue
