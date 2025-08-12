@@ -37,5 +37,4 @@ def list_all_devices_from_db(db: Session):
         joinedload(Devices.main_category)
     ).order_by(Devices.id).all()
     db.close()
-    db.close()
     return devices
