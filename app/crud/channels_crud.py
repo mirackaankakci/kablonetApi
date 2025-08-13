@@ -38,3 +38,10 @@ def list_all_channels_from_db(db: Session):
     ).order_by(Channels.id).all()
     db.close()
     return channel
+
+def get_channels_by_category_id_from_db(channel_category_id: int):
+    channel_category = db.query(Channels).options(
+        joinedload(Channels.channel_category)
+    ).filter(Channels.channel_category_id == channel_category_id).order_by(Channels.id).all()
+    db.close()
+    return channel_category

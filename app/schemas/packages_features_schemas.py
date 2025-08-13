@@ -34,7 +34,7 @@ class PackagesFeaturesCreateSchemas(BaseModel):
     text: str
     is_active: bool
     add_time: DateTime
-    packages: int
+    packages_id: int
     
     class Config:
         from_attributes = True
@@ -46,7 +46,7 @@ class PackagesFeaturesUpdateSchemas(BaseModel):
     text: str
     is_active: bool
     update_time: DateTime
-    packages: int
+    packages_id: int
     
     class Config:
         from_attributes = True

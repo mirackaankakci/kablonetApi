@@ -9,11 +9,12 @@ db: Session = SessionLocal()
 
 def get_packages_channels_by_id_from_db(packages_channels_id: int):
     packages_channels= db.query(PackagesChannels).options(
-        joinedload(PackagesChannels.channels)
-            .joinedload(Channels.channel_category),
-        joinedload(PackagesChannels.packages)
-            .joinedload(Packages.packages_category)
-            .joinedload(Packages.main_category)
+    joinedload(PackagesChannels.channels)
+        .joinedload(Channels.channel_category),
+    joinedload(PackagesChannels.packages)
+        .joinedload(Packages.main_category),  
+    joinedload(PackagesChannels.packages)
+        .joinedload(Packages.packages_category)
     ).filter(PackagesChannels.id == packages_channels_id).first()
     db.close()
     return packages_channels
@@ -40,11 +41,25 @@ def update_packages_channels_from_db(packages_channels_id: int, packages_channel
 
 def list_all_packages_channels_from_db(db: Session):
     packages_channels= db.query(PackagesChannels).options(
-        joinedload(PackagesChannels.channels)
-            .joinedload(Channels.channel_category),
-        joinedload(PackagesChannels.packages)
-            .joinedload(Packages.packages_category)
-            .joinedload(Packages.main_category)
+    joinedload(PackagesChannels.channels)
+        .joinedload(Channels.channel_category),
+    joinedload(PackagesChannels.packages)
+        .joinedload(Packages.main_category),  
+    joinedload(PackagesChannels.packages)
+        .joinedload(Packages.packages_category)
     ).order_by(PackagesChannels.id).all()
+    db.close()
+    return packages_channels
+
+
+def get_packages_channels_by_packages_from_db(packages_id: int):
+    packages_channels= db.query(PackagesChannels).options(
+    joinedload(PackagesChannels.channels)
+        .joinedload(Channels.channel_category),
+    joinedload(PackagesChannels.packages)
+        .joinedload(Packages.main_category),  
+    joinedload(PackagesChannels.packages)
+        .joinedload(Packages.packages_category)
+    ).filter(PackagesChannels.packages_id == packages_id).order_by(PackagesChannels.id).all()
     db.close()
     return packages_channels

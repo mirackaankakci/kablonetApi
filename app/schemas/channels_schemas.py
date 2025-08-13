@@ -39,7 +39,7 @@ class ChannelsCreateSchemas(BaseModel):
     image: str
     is_active: bool
     add_time: DateTime    
-    channel_category: int
+    channel_category_id: int
     
     class Config:
         from_attributes = True
@@ -52,7 +52,7 @@ class ChannelsUpdateSchemas(BaseModel):
     image: str
     is_active: bool
     update_time: DateTime
-    channel_category: int
+    channel_category_id: int
     
     class Config:
         from_attributes = True

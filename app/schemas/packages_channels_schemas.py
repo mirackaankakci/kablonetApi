@@ -35,8 +35,8 @@ class PackagesChannelsSchemas(BaseModel):
 class PackagesChannelsCreateSchemas(BaseModel):
     is_active: bool
     add_time: DateTime
-    channels: int
-    packages: int
+    channels_id: int
+    packages_id: int
     
     class Config:
         from_attributes = True
@@ -47,8 +47,8 @@ class PackagesChannelsCreateSchemas(BaseModel):
 class PackagesChannelsUpdateSchemas(BaseModel):
     is_active: bool
     update_time: DateTime
-    channels: int
-    packages: int
+    channels_id: int
+    packages_id: int
     
     class Config:
         from_attributes = True

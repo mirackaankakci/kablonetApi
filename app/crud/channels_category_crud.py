@@ -35,3 +35,4 @@ def list_all_channel_category_from_db(db: Session):
     channel_categories = db.query(ChannelCategory).order_by(ChannelCategory.id).all()
     db.close()
     return channel_categories
+

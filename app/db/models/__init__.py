@@ -17,3 +17,10 @@ from .TariffCategory import TariffCategory
 from .TariffCell import TariffCell
 from .TariffColum import TariffColumn
 from .TariffValue import TariffValue
+
+from .channel_category import ChannelCategory
+from .channels import Channels
+from .packages import Packages
+from .packages_category import PackagesCategory
+from .packages_channels import PackagesChannels
+from .packages_features import PackagesFeatures
