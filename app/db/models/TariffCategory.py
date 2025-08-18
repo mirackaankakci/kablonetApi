@@ -15,6 +15,6 @@ class TariffCategory(Base):
     main_category_id = Column(Integer, ForeignKey("main_category.id"), nullable=True)
 
     main_category = relationship("MainCategory", back_populates="tariff_categories")
-    tariffs = relationship("Tariff", back_populates="tariff_category")
-    category_columns = relationship("CategoryColumn", back_populates="tariff_category")
+    tariff_lines = relationship("TariffLine", back_populates="tariff_category")
+    category_columns = relationship("TariffCategoryColumn", back_populates="tariff_category")
     

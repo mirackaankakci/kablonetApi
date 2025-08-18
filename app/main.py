@@ -15,7 +15,13 @@ from app.api.v1 import (
     packages_category_routes,
     packages_channels_routes,
     packages_features_routes,
-    packages_routes
+    packages_routes,
+    tariff_line_routes,
+    tariff_column_routes,
+    tariff_cell_routes,
+    tariff_value_routes,
+    tariff_category_column_routes
+
 )
 from app.db.database import engine
 from app.db.base import Base
@@ -42,4 +48,8 @@ app.include_router(packages_category_routes.router)
 app.include_router(packages_channels_routes.router)
 app.include_router(packages_features_routes.router)
 app.include_router(packages_routes.router)
-
+app.include_router(tariff_line_routes.router)
+app.include_router(tariff_column_routes.router)
+app.include_router(tariff_cell_routes.router)
+app.include_router(tariff_value_routes.router)
+app.include_router(tariff_category_column_routes.router)

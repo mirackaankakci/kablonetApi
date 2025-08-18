@@ -12,4 +12,4 @@ class TariffValue(Base):
     update_date = Column(String, nullable=False)
 
     tariff_cells = relationship("TariffCell", back_populates="tariff_value")
-    category_columns = relationship("CategoryColumn", back_populates="tariff_value")
+    # Removed category_columns relationship to avoid back_populates conflicts

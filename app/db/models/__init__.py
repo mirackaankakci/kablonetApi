@@ -9,13 +9,12 @@ from .campaign_commitment import CampaignCommitment
 from .campaign_features import CampaignFeatures
 from .commitment_period import CommitmentPeriod
 from .device_commitment import DeviceCommitment
-from .CategoryColumn import CategoryColumn
+from .TariffCategoryColumn import TariffCategoryColumn
 from .devices import Devices
 
-from .Tariff import Tariff
-from .TariffCategory import TariffCategory
+from .TariffLine import TariffLine
 from .TariffCell import TariffCell
-from .TariffColum import TariffColumn
+from .TariffColumn import TariffColumn
 from .TariffValue import TariffValue
 
 from .channel_category import ChannelCategory

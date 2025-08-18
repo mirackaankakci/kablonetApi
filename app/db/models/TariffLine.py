@@ -10,5 +10,5 @@ class TariffLine(Base):
     tariff_category_id = Column("tariffCategoryId", Integer, ForeignKey("tariff_category.id"), nullable=False)
     is_active = Column(Boolean, default=True)
 
-    tariff_category = relationship("TariffCategory", back_populates="tariff_line_items")
+    tariff_category = relationship("TariffCategory", back_populates="tariff_lines")
     tariff_cells = relationship("TariffCell", back_populates="tariff_line")
