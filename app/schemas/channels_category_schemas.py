@@ -1,58 +1,53 @@
 from pydantic import BaseModel
 from datetime import datetime as DateTime
 
-class MainCategoryResponse(BaseModel):
+class ChannelCategorySchemas(BaseModel):
     id: int
     name: str
-    isActive: bool
+    
+    is_active: bool
     add_time: DateTime
     update_time: DateTime
+        
+    class Config:
+        from_attributes = True
+        json_encoders = {
+            DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
+        }
 
+
+class ChannelCategoryResponse(BaseModel):
+    id: int
+    name: str
+    is_active: bool
+
+        
     class Config:
         from_attributes = True
         json_encoders = {
             DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
         
-class MainCategorySchema(BaseModel):
-    id: int
+class ChannelCategoryCreateSchemas(BaseModel):
     name: str
-    isActive: bool = True  # Varsayılan değer
-    class Config:
-        from_attributes = True
-
-
-class MainCategoryCreateResponse(BaseModel):
-    name: str
-    isActive: bool = True  # Varsayılan değer
+    
+    is_active: bool
     add_time: DateTime
-
+        
     class Config:
         from_attributes = True
         json_encoders = {
             DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
-
-
-class MainCategoryUpdateResponse(BaseModel):
-    # id: int
+        
+class ChannelCategoryUpdateSchemas(BaseModel):
     name: str
-    isActive: bool
+    
+    is_active: bool
     update_time: DateTime
+        
     class Config:
         from_attributes = True
         json_encoders = {
             DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
-
-class MainCategoryUpdate(BaseModel):
-    name: str
-    isActive: bool
-    update_time: DateTime
-
-    class Config:
-        from_attributes = True
-        json_encoders = {
-            DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
-        }
-

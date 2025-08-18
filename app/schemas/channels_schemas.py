@@ -1,58 +1,62 @@
 from pydantic import BaseModel
 from datetime import datetime as DateTime
+from app.schemas.channels_category_schemas import ChannelCategoryResponse
 
-class MainCategoryResponse(BaseModel):
+class ChannelsSchemas(BaseModel):
     id: int
     name: str
-    isActive: bool
+    image: str
+    
+    is_active: bool
     add_time: DateTime
     update_time: DateTime
-
+    
+    channel_category: ChannelCategoryResponse
+    
     class Config:
         from_attributes = True
         json_encoders = {
             DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
         
-class MainCategorySchema(BaseModel):
+class ChannelsResponse(BaseModel):
     id: int
     name: str
-    isActive: bool = True  # Varsayılan değer
+    image: str 
+    is_active: bool
+    
+    channel_category: ChannelCategoryResponse
+    
     class Config:
         from_attributes = True
-
-
-class MainCategoryCreateResponse(BaseModel):
+        json_encoders = {
+            DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
+        }
+        
+        
+class ChannelsCreateSchemas(BaseModel):
     name: str
-    isActive: bool = True  # Varsayılan değer
-    add_time: DateTime
-
+    image: str
+    is_active: bool
+    add_time: DateTime    
+    channel_category_id: int
+    
     class Config:
         from_attributes = True
         json_encoders = {
             DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
 
-
-class MainCategoryUpdateResponse(BaseModel):
-    # id: int
+class ChannelsUpdateSchemas(BaseModel):
     name: str
-    isActive: bool
+    image: str
+    is_active: bool
     update_time: DateTime
+    channel_category_id: int
+    
     class Config:
         from_attributes = True
         json_encoders = {
             DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
-
-class MainCategoryUpdate(BaseModel):
-    name: str
-    isActive: bool
-    update_time: DateTime
-
-    class Config:
-        from_attributes = True
-        json_encoders = {
-            DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
-        }
-
+        

@@ -1,8 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException
 from app.schemas.commitment_period_schemas import CommitmentPeriodSchema, CommitmentPeriodCreateSchema, CommitmentPeriodUpdateSchema, CommitmentPeriodResponse
-from app.services.commitment_period_service import get_commitment_period_by_id, create_commitment_period_service, update_commitment_period_service
+from app.services.commitment_period_service import get_commitment_period_by_id, create_commitment_period_service, update_commitment_period_service,list_all_commitment_period_service
+from sqlalchemy.orm import Session
+from app.db.database import get_db
+
 
 router = APIRouter(prefix="/commitment-period", tags=["Commitment Periods"])
+
+@router.get("/periods", response_model=list[CommitmentPeriodSchema])
+def list_all_commitment_periods(db: Session = Depends(get_db)):
+    list_commitment_period = list_all_commitment_period_service(db)
+    if not list_commitment_period:
+        raise HTTPException(status_code=404, detail="No Commitment Periods found")
+    return list_commitment_period
 
 @router.get("/{commitment_period_id}", response_model=CommitmentPeriodResponse)
 def get_commitment_period(commitment_period_id: int):

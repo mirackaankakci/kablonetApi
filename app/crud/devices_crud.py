@@ -31,3 +31,10 @@ def update_device_from_db(device_id: int, device_data):
     db.refresh(device)
     db.close()
     return device
+
+def list_all_devices_from_db(db: Session):
+    devices = db.query(Devices).options(
+        joinedload(Devices.main_category)
+    ).order_by(Devices.id).all()
+    db.close()
+    return devices

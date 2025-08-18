@@ -17,3 +17,4 @@ class MainCategory(Base):
     devices = relationship("Devices", back_populates="main_category")
     about_contents = relationship("About_Contents", back_populates="main_category")
     tariff_categories = relationship("TariffCategory", back_populates="main_category")###silinecek 
+    packages = relationship("Packages", back_populates="main_category")

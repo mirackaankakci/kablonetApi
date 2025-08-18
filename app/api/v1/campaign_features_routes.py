@@ -1,8 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException
-from app.schemas.campaign_features_schemas import CampaignFeaturesSchema, CampaignFeaturesCreateSchema, CampaignFeaturesUpdateSchema, CampaignFeaturesResponse
-from app.services.campaign_features_services import get_campaign_features_by_id, create_campaign_features_service, update_campaign_features_service
+from app.schemas.campaign_features_schemas import CampaignFeaturesSchema, CampaignFeaturesCreateSchema, CampaignFeaturesUpdateSchema, CampaignFeaturesResponse, CampaignFeaturesAllResponse
+from app.services.campaign_features_services import get_campaign_features_by_id, create_campaign_features_service, update_campaign_features_service, list_all_campaign_features_service
+from sqlalchemy.orm import Session
+from app.db.database import get_db
 
 router = APIRouter(prefix="/campaigns-features", tags=["Campaign Features"])
+
+@router.get("/features", response_model=list[CampaignFeaturesAllResponse])
+def list_all_campaign_features(db: Session = Depends(get_db)):
+    return list_all_campaign_features_service(db)
 
 @router.get("/{campaign_id}/features", response_model=CampaignFeaturesResponse)
 def get_campaign_features(campaign_id: int):

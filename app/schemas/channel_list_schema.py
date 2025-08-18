@@ -18,7 +18,7 @@ class ChannelListResponse(BaseModel):
         }
         
 class ChannelListAllResponse(BaseModel):
-    # id: int
+    id: int
     channel_no: int
     channel_name: str
     digital_frequency: str

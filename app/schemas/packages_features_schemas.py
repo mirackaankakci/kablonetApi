@@ -1,58 +1,55 @@
 from pydantic import BaseModel
 from datetime import datetime as DateTime
+from app.schemas.packages_schemas import PackagesResponse
 
-class MainCategoryResponse(BaseModel):
+class PackagesFeaturesSchemas(BaseModel):
     id: int
-    name: str
-    isActive: bool
+    text: str
+    
+    is_active: bool
     add_time: DateTime
     update_time: DateTime
-
+    
+    packages: PackagesResponse
+    
     class Config:
         from_attributes = True
         json_encoders = {
             DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
         
-class MainCategorySchema(BaseModel):
+class PackagesFeaturesResponse(BaseModel):
     id: int
-    name: str
-    isActive: bool = True  # Varsayılan değer
+    text: str
+    is_active: bool
+    packages: PackagesResponse
+    
     class Config:
         from_attributes = True
-
-
-class MainCategoryCreateResponse(BaseModel):
-    name: str
-    isActive: bool = True  # Varsayılan değer
+        json_encoders = {
+            DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
+        }
+        
+class PackagesFeaturesCreateSchemas(BaseModel):
+    text: str
+    is_active: bool
     add_time: DateTime
-
+    packages_id: int
+    
     class Config:
         from_attributes = True
         json_encoders = {
             DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
-
-
-class MainCategoryUpdateResponse(BaseModel):
-    # id: int
-    name: str
-    isActive: bool
+        
+class PackagesFeaturesUpdateSchemas(BaseModel):
+    text: str
+    is_active: bool
     update_time: DateTime
+    packages_id: int
+    
     class Config:
         from_attributes = True
         json_encoders = {
             DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
-
-class MainCategoryUpdate(BaseModel):
-    name: str
-    isActive: bool
-    update_time: DateTime
-
-    class Config:
-        from_attributes = True
-        json_encoders = {
-            DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
-        }
-

@@ -10,6 +10,12 @@ from app.api.v1 import (
     device_commitment_routes,
     about_contents_routes,
     tariff_category_routes,
+    channels_category_routes,
+    channels_routes,
+    packages_category_routes,
+    packages_channels_routes,
+    packages_features_routes,
+    packages_routes
 )
 from app.db.database import engine
 from app.db.base import Base
@@ -30,3 +36,10 @@ app.include_router(devices_routes.router)
 app.include_router(device_commitment_routes.router)
 app.include_router(about_contents_routes.router)
 app.include_router(tariff_category_routes.router)
+app.include_router(channels_category_routes.router)
+app.include_router(channels_routes.router)
+app.include_router(packages_category_routes.router)
+app.include_router(packages_channels_routes.router)
+app.include_router(packages_features_routes.router)
+app.include_router(packages_routes.router)
+

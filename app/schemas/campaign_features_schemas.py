@@ -38,6 +38,21 @@ class CampaignFeaturesResponse(BaseModel):
             DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
         
+class CampaignFeaturesAllResponse(BaseModel):
+    id: int
+    pricing_HTML: str
+    detail_HTML: str
+    devices: str
+    add_time: DateTime
+    update_time: DateTime
+    is_active: bool
+    
+    class Config:
+        from_attributes = True
+        json_encoders = {
+            DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
+        }
+        
 class CampaignFeaturesCreateSchema(BaseModel):
     pricing_HTML: str
     detail_HTML: str | None = None

@@ -3,8 +3,6 @@ from datetime import datetime as DateTime
 from app.schemas.main_category_schema import MainCategorySchema
 from app.schemas.campaign_features_schemas import FeaturesSchema
 
-
-
 class CampaignSchema(BaseModel):
     id: int
     name: str
@@ -20,12 +18,13 @@ class CampaignSchema(BaseModel):
     
     # ÖZELLİKLERDEN GELEN ŞEMA GİRİLECEK
     
-
+    
     class Config:
         from_attributes = True
         json_encoders = {
             DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
+        
         
 class CampaignInfoSchema(BaseModel):
     id: int
