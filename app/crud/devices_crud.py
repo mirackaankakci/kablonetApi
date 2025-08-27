@@ -13,7 +13,7 @@ def get_device_by_id_from_db(device_id: int):
     return device
 
 def create_device_from_db(device_data):
-    new_device =Devices(**device_data.dict())
+    new_device =Devices(**device_data)
     db.add(new_device)
     db.commit()
     db.refresh(new_device)
@@ -25,7 +25,7 @@ def update_device_from_db(device_id: int, device_data):
     if not device:
         db.close()
         return None
-    for key, value in device_data.dict().items():
+    for key, value in device_data.items():
         setattr(device, key, value)
     db.commit()
     db.refresh(device)

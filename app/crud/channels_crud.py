@@ -12,7 +12,7 @@ def get_channels_by_id_from_db(channels_id: int):
     db.close()
     return channel
 
-def create_channels_from_db(channels_data):
+def create_channels_from_db(channels_data, db: Session):
     new_channels = Channels(**channels_data.dict())
     db.add(new_channels)
     db.commit()

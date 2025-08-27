@@ -14,33 +14,21 @@ def list_all_contents(db: Session= Depends(get_db)):
 ## List all contents by category - hepsi kategoriye gore listelenir
 @router.get("/contents-category", response_model=list[AboutContentsSchema])
 def list_all_contents_category(main_category_id: int, db: Session = Depends(get_db)):
-    contents = get_all_about_contents_by_category_service(main_category_id)
-    if not contents:
-        raise HTTPException(status_code=404, detail="No contents found for this category")
+    contents = get_all_about_contents_by_category_service(main_category_id, db)
     return contents
 
 
 @router.get("/{content_id}", response_model=AboutContentsSchema)
-def get_about_content(content_id: int):
-    content = get_about_content_service(content_id)
-    if not content:
-        raise HTTPException(status_code=404, detail="Content not found")
+def get_about_content(content_id: int, db: Session = Depends(get_db)):
+    content = get_about_content_service(content_id, db)
     return content
 
 @router.post("/new-content", response_model=AboutContentsCreateSchema)
-def add_about_content(content_data: AboutContentsCreateSchema):
-    try:
-        created_content = create_about_content_service(content_data)
-        return created_content
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+def add_about_content(content_data: AboutContentsCreateSchema, db: Session = Depends(get_db)):
+    created_content = create_about_content_service(content_data, db)
+    return created_content
 
 @router.put("/{content_id}", response_model=AboutContentsUpdateSchema)
-def update_about_content(content_id: int, content_data: AboutContentsUpdateSchema):
-    try:
-        updated_content = update_about_content_service(content_id, content_data)
-        if not updated_content:
-            raise HTTPException(status_code=404, detail="Content not found")
-        return updated_content
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+def update_about_content(content_id: int, content_data: AboutContentsUpdateSchema, db: Session = Depends(get_db)):
+    updated_content = update_about_content_service(content_id, content_data, db)
+    return updated_content

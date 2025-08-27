@@ -11,26 +11,16 @@ def list_all_main_categories(db: Session = Depends(get_db)):
     return get_all_main_categories_service(db)
 
 @router.get("/{main_category_id}", response_model=MainCategoryResponse)
-def get_main_category(main_category_id: int):
-    main_category = get_main_category_by_id(main_category_id)
-    if not main_category:
-        raise HTTPException(status_code=404, detail="Ana kategori bulunamadı")
+def get_main_category(main_category_id: int, db: Session = Depends(get_db)):
+    main_category = get_main_category_by_id(main_category_id, db)
     return main_category
 
 @router.post("/new-categories", response_model=MainCategoryCreateResponse)
-def add_main_category(main_category_data: MainCategoryCreateResponse):
-    try:
-        created_category = create_main_category_service(main_category_data)
-        return created_category
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+def add_main_category(main_category_data: MainCategoryCreateResponse, db: Session = Depends(get_db)):
+    created_category = create_main_category_service(main_category_data, db)
+    return created_category
 
 @router.put("/{main_category_id}", response_model=MainCategoryUpdate)
-def update_main_category(main_category_id: int, main_category_data: MainCategoryUpdateResponse):
-    try:
-        updated_category = update_main_category_service(main_category_data, main_category_id)
-        if not updated_category:
-            raise HTTPException(status_code=404, detail="Ana kategori bulunamadı")
-        return updated_category
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+def update_main_category(main_category_id: int, main_category_data: MainCategoryUpdateResponse, db: Session = Depends(get_db)):
+    updated_category = update_main_category_service(main_category_data, main_category_id, db)
+    return updated_category

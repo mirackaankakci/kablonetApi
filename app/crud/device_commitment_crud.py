@@ -17,7 +17,7 @@ def get_device_commitment_by_id_from_db(device_commitment_id: int):
     return device_commitment
 
 def create_device_commitment_from_db(device_commitment_data):
-    new_device_commitment = DeviceCommitment(**device_commitment_data.dict())
+    new_device_commitment = DeviceCommitment(**device_commitment_data)
     db.add(new_device_commitment)
     db.commit()
     db.refresh(new_device_commitment)
@@ -29,7 +29,7 @@ def update_device_commitment_from_db(device_commitment_id: int, device_commitmen
     if not device_commitment:
         db.close()
         return None
-    for key, value in device_commitment_data.dict().items():
+    for key, value in device_commitment_data.items():
         setattr(device_commitment, key, value)
     db.commit()
     db.refresh(device_commitment)

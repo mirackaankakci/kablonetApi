@@ -13,7 +13,7 @@ def get_about_content_by_id_from_db(about_content_id: int):
     return about_content
 
 def create_about_content_from_db(about_content_data):
-    new_about_content = About_Contents(**about_content_data.dict())
+    new_about_content = About_Contents(**about_content_data)
     db.add(new_about_content)
     db.commit()
     db.refresh(new_about_content)
@@ -25,7 +25,7 @@ def update_about_content_from_db(about_content_id: int, about_content_data):
     if not about_content:
         db.close()
         return None
-    for key, value in about_content_data.dict().items():
+    for key, value in about_content_data.items():
         setattr(about_content, key, value)
     db.commit()
     db.refresh(about_content)

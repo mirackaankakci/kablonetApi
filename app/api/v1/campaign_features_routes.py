@@ -11,26 +11,16 @@ def list_all_campaign_features(db: Session = Depends(get_db)):
     return list_all_campaign_features_service(db)
 
 @router.get("/{campaign_id}/features", response_model=CampaignFeaturesResponse)
-def get_campaign_features(campaign_id: int):
-    campaign_features = get_campaign_features_by_id(campaign_id)
-    if not campaign_features:
-        raise HTTPException(status_code=404, detail="Campaign features not found")
+def get_campaign_features(campaign_id: int, db: Session = Depends(get_db)):
+    campaign_features = get_campaign_features_by_id(campaign_id,db)
     return campaign_features
 
 @router.post("/new-features", response_model=CampaignFeaturesCreateSchema)
-def add_campaign_features(campaign_features_data: CampaignFeaturesCreateSchema):
-    try:
-        created_campaign_features = create_campaign_features_service(campaign_features_data)
-        return created_campaign_features
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+def add_campaign_features(campaign_features_data: CampaignFeaturesCreateSchema, db: Session = Depends(get_db)):
+    created_campaign_features = create_campaign_features_service(campaign_features_data,db)
+    return created_campaign_features
 
 @router.put("/{campaign_id}", response_model=CampaignFeaturesUpdateSchema)
-def update_campaign_features(campaign_id: int, features_data: CampaignFeaturesUpdateSchema):
-    try:
-        updated_campaign_features = update_campaign_features_service(features_data, campaign_id)
-        if not updated_campaign_features:
-            raise HTTPException(status_code=404, detail="Campaign features not found")
-        return updated_campaign_features
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+def update_campaign_features(campaign_id: int, features_data: CampaignFeaturesUpdateSchema, db: Session = Depends(get_db)):
+    updated_campaign_features = update_campaign_features_service(features_data, campaign_id,db)
+    return updated_campaign_features

@@ -30,7 +30,7 @@ def get_all_campaign_commitments_from_db(db: Session):
     return commitment
 
 def create_campaign_commitment_from_db(commitment_data):
-    new_commitment = CampaignCommitment(**commitment_data.dict())
+    new_commitment = CampaignCommitment(**commitment_data)
     db.add(new_commitment)
     db.commit()
     db.refresh(new_commitment)
@@ -42,7 +42,7 @@ def update_campaign_commitment_from_db(commitment_id: int, commitment_data):
     if not commitment:
         db.close()
         return None
-    for key, value in commitment_data.dict().items():
+    for key, value in commitment_data.items():
         setattr(commitment, key, value)
     db.commit()
     db.refresh(commitment)

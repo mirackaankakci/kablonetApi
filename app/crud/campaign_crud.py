@@ -8,7 +8,7 @@ from app.db.database import SessionLocal
 
 db:Session = SessionLocal()
 
-def get_campaign_by_id_from_db(campaign_id: int):
+def get_campaign_by_id_from_db(campaign_id: int ,db: Session):
     campaign = db.query(Campaign).options(
         joinedload(Campaign.main_category),
         joinedload(Campaign.campaign_features)
@@ -17,7 +17,7 @@ def get_campaign_by_id_from_db(campaign_id: int):
     return campaign
 
 #kategoriye gore kampanya getir
-def get_all_campaigns_by_category_from_db(main_category_id: int):
+def get_all_campaigns_by_category_from_db(main_category_id: int, db: Session):
     campaigns = db.query(Campaign).options(
         joinedload(Campaign.main_category),
         joinedload(Campaign.campaign_features)
@@ -36,8 +36,8 @@ def get_all_campaigns_from_db(db: Session):
     return campaigns
 
 
-def create_campaign_from_db(campaign_data):
-    new_campaign = Campaign(**campaign_data.dict())
+def create_campaign_from_db(campaign_data, db: Session):
+    new_campaign = Campaign(**campaign_data)
     db.add(new_campaign)
     db.commit()
     db.refresh(new_campaign)
@@ -45,12 +45,12 @@ def create_campaign_from_db(campaign_data):
     return new_campaign
 
 
-def update_campaign_from_db(campaign_id: int, campaign_data):
+def update_campaign_from_db(campaign_id: int, campaign_data, db: Session):
     campaign = db.query(Campaign).filter(Campaign.id == campaign_id).first()
     if not campaign:
         db.close()
         return None
-    for key, value in campaign_data.dict().items():
+    for key, value in campaign_data.items():
         setattr(campaign, key, value)
     db.commit()
     db.refresh(campaign)

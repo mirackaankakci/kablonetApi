@@ -17,7 +17,7 @@ def get_main_category_by_id_from_db(main_category_id: int):
 
 def create_main_category_from_db(main_category_data):
     db: Session = SessionLocal()
-    new_main_category = MainCategory(**main_category_data.dict())
+    new_main_category = MainCategory(**main_category_data)
     db.add(new_main_category)
     db.commit()
     db.refresh(new_main_category)
@@ -30,7 +30,7 @@ def update_main_category_in_db(main_category_data, main_category_id: int):
     if not main_category:
         db.close()
         return None
-    for key, value in main_category_data.dict().items():
+    for key, value in main_category_data.items():
         setattr(main_category, key, value)
     db.commit()
     db.refresh(main_category)

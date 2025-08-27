@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.schemas.campaign_commitment_schemas import CampaignCommitmentCreateSchema, CampaignCommitmentUpdateSchema, CampaignCommitmentSchema
@@ -8,39 +8,25 @@ router = APIRouter(prefix="/campaign-commitments", tags=["Campaign Commitments"]
 
 @router.get("/campaign-commitments-device", response_model=list[CampaignCommitmentSchema])
 def list_all_campaign_commitments_campaign(campaign_id: int, db: Session = Depends(get_db)):
-    commitments = get_all_campaign_commitments_campaign_service(campaign_id)
-    if not commitments:
-        raise HTTPException(status_code=404, detail="No Campaign Commitments found for this campaign")
+    commitments = get_all_campaign_commitments_campaign_service(campaign_id, db)
     return commitments
 
 @router.get("/campaign-commitments", response_model=list[CampaignCommitmentSchema])
 def list_all_campaign_commitments(db: Session= Depends(get_db)):
     commitments = get_all_campaign_commitments_service(db)
-    if not commitments:
-        raise HTTPException(status_code=404, detail="No Campaign Commitments found")
     return commitments
 
 @router.get("/{commitment_id}", response_model=CampaignCommitmentSchema)
-def get_campaign_commitment(commitment_id: int):
-    commitment = get_campaign_commitment_by_id(commitment_id)
-    if not commitment:
-        raise HTTPException(status_code=404, detail="Campaign Commitment not found")
+def get_campaign_commitment(commitment_id: int, db: Session = Depends(get_db)):
+    commitment = get_campaign_commitment_by_id(commitment_id, db)
     return commitment
 
 @router.post("/new-commitment", response_model=CampaignCommitmentCreateSchema)
-def add_campaign_commitment(commitment_data: CampaignCommitmentCreateSchema):
-    try:
-        created_commitment = create_campaign_commitment_service(commitment_data)
-        return created_commitment
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+def add_campaign_commitment(commitment_data: CampaignCommitmentCreateSchema, db: Session = Depends(get_db)):
+    created_commitment = create_campaign_commitment_service(commitment_data, db)
+    return created_commitment
 
 @router.put("/{commitment_id}", response_model=CampaignCommitmentUpdateSchema)
-def update_campaign_commitment(commitment_id: int, commitment_data: CampaignCommitmentUpdateSchema):
-    try:
-        updated_commitment = update_campaign_commitment_service(commitment_id, commitment_data)
-        if not updated_commitment:
-            raise HTTPException(status_code=404, detail="Campaign Commitment not found")
-        return updated_commitment
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+def update_campaign_commitment(commitment_id: int, commitment_data: CampaignCommitmentUpdateSchema, db: Session = Depends(get_db)):
+    updated_commitment = update_campaign_commitment_service(commitment_id, commitment_data, db)
+    return updated_commitment

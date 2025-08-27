@@ -1,14 +1,53 @@
 from app.crud.campaign_features_crud import get_campaign_features_by_id_from_db, create_campaign_features_from_db, update_campaign_features_in_db, list_all_campaign_features_from_db
 from sqlalchemy.orm import Session
+from sqlalchemy import Integer, String
+from fastapi import APIRouter, Depends, HTTPException
+from app.db.models.campaign_features import CampaignFeatures
+from app.schemas.campaign_features_schemas import CampaignFeaturesSchema, CampaignFeaturesCreateSchema
+from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty, get_all_ready_have_id,ensure_dict
 
-def get_campaign_features_by_id(campaign_features_id: int):
-    return get_campaign_features_by_id_from_db(campaign_features_id)
+string_columns = [
+        col.name for col in CampaignFeatures.__table__.columns
+        if isinstance(col.type, String)
+    ]
 
-def create_campaign_features_service(campaign_features_data: dict):
-    return create_campaign_features_from_db(campaign_features_data)
 
-def update_campaign_features_service(campaign_features_data: dict, campaign_features_id: int):
-    return update_campaign_features_in_db(campaign_features_data, campaign_features_id)
+def get_campaign_features_by_id(campaign_features_id: int, db: Session):
+    get_object_by_id(CampaignFeatures, campaign_features_id, db)
+    return get_campaign_features_by_id_from_db(campaign_features_id, db)
+
+
+
+def create_campaign_features_service(campaign_features_data: CampaignFeaturesCreateSchema | dict, db: Session):
+    campaign_features_data= ensure_dict(campaign_features_data)
+    validate_list_not_empty(campaign_features_data)
+    
+    for col_name in string_columns:
+        value = campaign_features_data.get(col_name)
+        if isinstance(value, str):  # sadece string ise kontrol et
+            validate_min_length(value)
+
+    return create_campaign_features_from_db(campaign_features_data, db)
+
+def update_campaign_features_service(campaign_features_data: dict, campaign_features_id: int, db: Session):
+    campaign_features_data= ensure_dict(campaign_features_data)
+    validate_list_not_empty(campaign_features_data)
+    get_object_by_id(CampaignFeatures, campaign_features_id, db)
+    
+    for col_name in string_columns:
+        value = campaign_features_data.get(col_name)
+        if isinstance(value, str):  # sadece string ise kontrol et
+            validate_min_length(value)
+    
+    
+    return update_campaign_features_in_db(campaign_features_data, campaign_features_id, db)
+
+
 
 def list_all_campaign_features_service(db: Session):
-    return list_all_campaign_features_from_db(db)
+    
+    campaign_features=list_all_campaign_features_from_db(db)
+    
+    validate_list_not_empty(campaign_features)
+    
+    return campaign_features
