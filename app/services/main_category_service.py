@@ -1,9 +1,10 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import Integer, String
+from app.schemas.main_category_schema import MainCategoryCreateResponse
 from app.db.models.MainCategory import MainCategory
-from app.crud.main_category_crud import get_main_category_by_id_from_db, create_main_category_from_db, update_main_category_in_db, get_all_main_categories_from_db
-from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty, get_all_ready_have_id,ensure_dict
+from app.crud.main_category_crud import get_main_category_by_id_from_db, create_main_category_from_db, update_main_category_in_db, get_all_main_categories_from_db, deactivate_main_category_from_db
+from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict
 
 string_columns = [
         col.name for col in MainCategory.__table__.columns
@@ -14,7 +15,7 @@ def get_main_category_by_id(main_category_id: int, db: Session):
     get_object_by_id(MainCategory, main_category_id, db)
     return get_main_category_by_id_from_db(main_category_id, db)
 
-def create_main_category_service(main_category_data: dict, db: Session):
+def create_main_category_service(main_category_data: MainCategoryCreateResponse | dict, db: Session):
     main_category_data= ensure_dict(main_category_data)
     validate_list_not_empty(main_category_data)
     
@@ -43,3 +44,8 @@ def get_all_main_categories_service(db: Session):
     validate_list_not_empty(main_categories)
     return main_categories
     
+
+def deactivate_main_category_services(main_category_id: int, db: Session):
+    get_object_by_id(MainCategory, main_category_id, db)
+    main_categories = deactivate_main_category_from_db(main_category_id, db)
+    return main_categories

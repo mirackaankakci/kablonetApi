@@ -4,7 +4,7 @@ from datetime import datetime as DateTime
 class MainCategoryResponse(BaseModel):
     id: int
     name: str
-    isActive: bool
+    is_active: bool
     add_time: DateTime
     update_time: DateTime
 
@@ -17,14 +17,14 @@ class MainCategoryResponse(BaseModel):
 class MainCategorySchema(BaseModel):
     id: int
     name: str
-    isActive: bool = True  # Varsayılan değer
+    is_active: bool = True  # Varsayılan değer
     class Config:
         from_attributes = True
 
 
 class MainCategoryCreateResponse(BaseModel):
     name: str
-    isActive: bool = True  # Varsayılan değer
+    is_active: bool = True  # Varsayılan değer
     add_time: DateTime
 
     class Config:
@@ -37,7 +37,7 @@ class MainCategoryCreateResponse(BaseModel):
 class MainCategoryUpdateResponse(BaseModel):
     # id: int
     name: str
-    isActive: bool
+    is_active: bool
     update_time: DateTime
     class Config:
         from_attributes = True
@@ -47,7 +47,7 @@ class MainCategoryUpdateResponse(BaseModel):
 
 class MainCategoryUpdate(BaseModel):
     name: str
-    isActive: bool
+    is_active: bool
     update_time: DateTime
 
     class Config:
@@ -56,3 +56,12 @@ class MainCategoryUpdate(BaseModel):
             DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
 
+class DeleteMainCategoryResponse(BaseModel):
+    is_active: bool
+    update_time: DateTime
+
+    class Config:
+        from_attributes = True
+        json_encoders = {
+            DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
+        }

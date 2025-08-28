@@ -8,8 +8,9 @@ db: Session = SessionLocal()
 
 #channel getirme işlemi
 def get_channel_list_by_id(channel_id: int, db: Session):
-    channel = db.query(channel_list).filter(channel_list.id == channel_id).first()
-    db.close()
+    channel = db.query(channel_list).filter(channel_list.id == channel_id,
+                                        channel_list.is_active == True).first()
+    #
     return channel
 
 
@@ -19,25 +20,41 @@ def create_channel_list(channel_data, db: Session):
     db.add(new_channel)
     db.commit()
     db.refresh(new_channel)
-    db.close()
+    #
     return new_channel
 
 #güncelleme işlemi
 def update_channel_list(channel_data, channel_id: int, db: Session):
     channel = db.query(channel_list).filter(channel_list.id == channel_id).first()
     if not channel:
-        db.close()
+        #
         return None
-    for key, value in channel_data.dict().items():
+    for key, value in channel_data.items():
         setattr(channel, key, value)
     db.commit()
     db.refresh(channel)
-    db.close()
+    #
     return channel
 
 #channel listeleme işlemi
 def get_all_channel_list(db: Session):
-    channel = db.query(channel_list).order_by(channel_list.id).all()
-    db.close()
+    channel = db.query(channel_list).filter(channel_list.is_active == True).order_by(channel_list.id).all()
+    #
     return channel
 
+def deactivate_channel_list_from_db(channel_id: int, db: Session):
+    channel = db.query(channel_list).filter(channel_list.id == channel_id,
+                                                    channel_list.is_active == True).first()
+    if not channel:
+        #
+        return None
+    
+    if not channel.is_active:
+        return channel 
+    
+    channel.is_active = False
+    
+    db.commit()
+    db.refresh(channel)
+    #
+    return channel

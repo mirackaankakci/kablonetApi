@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
-from app.services.campaign_service import get_campaign_by_id_service, create_campaign_service, update_campaign_service, get_all_campaigns_service, get_all_campaigns_by_category_service
+from app.services.campaign_service import get_campaign_by_id_service, create_campaign_service, update_campaign_service, get_all_campaigns_service, get_all_campaigns_by_category_service, deactivate_campaign_services
 from sqlalchemy.orm import Session
 from app.db.database import get_db
-from app.schemas.campaign_schema import CampaignSchema, CampaignCreateSchema, CampaignUpdateSchema, CampaignUpdateResponse
+from app.schemas.campaign_schema import CampaignSchema, CampaignCreateSchema, CampaignUpdateSchema, CampaignUpdateResponse,DeleteCampaignSchema
 
 router = APIRouter(prefix="/campaigns", tags=["Campaigns"])
 
@@ -31,3 +31,8 @@ def add_campaign(campaign_data: CampaignCreateSchema, db: Session = Depends(get_
 def update_campaign(campaign_id: int, campaign_data: CampaignUpdateResponse, db: Session = Depends(get_db)):
     updated_campaign = update_campaign_service(campaign_data, campaign_id, db)
     return updated_campaign
+
+@router.delete("/{campaign_id}", response_model= DeleteCampaignSchema)
+def deactivate_campaign(campaign_id: int, db: Session = Depends(get_db)):
+    deactivate = deactivate_campaign_services(campaign_id, db)
+    return deactivate

@@ -1,11 +1,11 @@
-from app.crud.campaign_crud import get_campaign_by_id_from_db, create_campaign_from_db, update_campaign_from_db, get_all_campaigns_from_db, get_all_campaigns_by_category_from_db
+from app.crud.campaign_crud import get_campaign_by_id_from_db, create_campaign_from_db, update_campaign_from_db, get_all_campaigns_from_db, get_all_campaigns_by_category_from_db, deactivate_campaign_from_db
 from sqlalchemy.orm import Session
 from sqlalchemy import String
 from app.schemas.campaign_schema import CampaignCreateSchema
 from app.db.models.campaign_features import CampaignFeatures
 from app.db.models.Campaign import Campaign
 from app.db.models.MainCategory import MainCategory
-from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty, get_all_ready_have_id,ensure_dict
+from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict
     
 
 # Minimum karakter sayısı (istersen her kolona özel de yapabilirsin)
@@ -26,31 +26,21 @@ def get_campaign_by_id_service(campaign_id: int, db: Session):
     return get_campaign_by_id_from_db(campaign_id,db)
 
 def get_all_campaigns_service(db: Session):
-    
     campaigns = get_all_campaigns_from_db(db)
-
     validate_list_not_empty(campaigns)
-
     return campaigns
 
 def get_all_campaigns_by_category_service(main_category_id: int, db: Session):
-    
     get_object_by_id(MainCategory, main_category_id, db)
-    
     campaigns = get_all_campaigns_by_category_from_db(main_category_id, db)
-    
     # Liste boşsa 404 kontrolü
     validate_list_not_empty(campaigns)
-
     return campaigns
 
-
-
 def create_campaign_service(campaign_data: CampaignCreateSchema | dict, db: Session):
-    
     # Eğer Pydantic model ise, model_dump() ile dict'e çevir
     campaign_data = ensure_dict(campaign_data)
-
+    
     # Boş veri kontrolü
     validate_list_not_empty(campaign_data)  # Aşağıda düzelttik
 
@@ -98,3 +88,8 @@ def update_campaign_service(campaign_data: dict, campaign_id: int, db: Session):
             validate_min_length(campaign_data.get(col_name))
 
     return update_campaign_from_db(campaign_id, campaign_data,db)
+
+def deactivate_campaign_services(campaign_id: int, db: Session):
+    get_object_by_id(Campaign, campaign_id, db)
+    campaigns = deactivate_campaign_from_db(campaign_id, db)
+    return campaigns

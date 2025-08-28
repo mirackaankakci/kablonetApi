@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.db.database import get_db
-from app.services.channel_list_service import get_channel_list_by_id_from_db, create_channel_list_service, update_channel_list_service, get_all_channel_list_service
-from app.schemas.channel_list_schema import ChannelListAllResponse, ChannelListCreate, ChannelListUpdate, ChannelListResponse
+from app.services.channel_list_service import get_channel_list_by_id_from_db, create_channel_list_service, update_channel_list_service, get_all_channel_list_service, deactivate_channel_list_services
+from app.schemas.channel_list_schema import ChannelListAllResponse, ChannelListCreate, ChannelListUpdate, ChannelListResponse,DeleteChannelListResponse
 
 router = APIRouter(prefix="/channel-list", tags=["Channel-List"])
 
@@ -24,3 +24,8 @@ def add_channel(channel_data: ChannelListCreate, db: Session = Depends(get_db)):
 def update_channel(channel_id: int, channel_data: ChannelListUpdate, db: Session = Depends(get_db)):
     updated_channel = update_channel_list_service(channel_data, channel_id, db)
     return updated_channel
+
+@router.delete("/{channel_id}", response_model= DeleteChannelListResponse)
+def deactivate_channel_list(channel_id: int, db: Session = Depends(get_db)):
+    deactivate = deactivate_channel_list_services(channel_id, db)
+    return deactivate

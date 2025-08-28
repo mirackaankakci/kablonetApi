@@ -8,8 +8,8 @@ class MainCategory(Base):
     __tablename__ = "main_category"
 
     id = Column(Integer, primary_key=True, unique=True, index=True, nullable=False)
-    name = Column(String, nullable=False, unique=True)
-    isActive = Column(Boolean, unique=False, index=True, nullable=False, default=True)
+    name = Column(String, nullable=False)
+    is_active = Column(Boolean, index=True, nullable=False, default=True)
     add_time = Column(DateTime, default=datetime.now, nullable=True)
     update_time = Column(DateTime, default=datetime.now, onupdate=datetime.now, nullable=True)
     

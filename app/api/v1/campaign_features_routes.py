@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
-from app.schemas.campaign_features_schemas import CampaignFeaturesSchema, CampaignFeaturesCreateSchema, CampaignFeaturesUpdateSchema, CampaignFeaturesResponse, CampaignFeaturesAllResponse
-from app.services.campaign_features_services import get_campaign_features_by_id, create_campaign_features_service, update_campaign_features_service, list_all_campaign_features_service
+from app.schemas.campaign_features_schemas import CampaignFeaturesSchema, CampaignFeaturesCreateSchema, CampaignFeaturesUpdateSchema, CampaignFeaturesResponse, CampaignFeaturesAllResponse, DeleteCampaignFeaturesSchema
+from app.services.campaign_features_services import get_campaign_features_by_id, create_campaign_features_service, update_campaign_features_service, list_all_campaign_features_service, deactivate_campaign_features_services
 from sqlalchemy.orm import Session
 from app.db.database import get_db
 
@@ -24,3 +24,8 @@ def add_campaign_features(campaign_features_data: CampaignFeaturesCreateSchema, 
 def update_campaign_features(campaign_id: int, features_data: CampaignFeaturesUpdateSchema, db: Session = Depends(get_db)):
     updated_campaign_features = update_campaign_features_service(features_data, campaign_id,db)
     return updated_campaign_features
+
+@router.delete("/{campaign_features_id}", response_model= DeleteCampaignFeaturesSchema)
+def deactivate_campaign_features(campaign_features_id: int, db: Session = Depends(get_db)):
+    deactivate = deactivate_campaign_features_services(campaign_features_id, db)
+    return deactivate

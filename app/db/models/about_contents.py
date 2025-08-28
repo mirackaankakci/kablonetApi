@@ -6,7 +6,7 @@ from datetime import datetime
 class About_Contents(Base):
     __tablename__ = "about_contents"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, unique=True, index=True)
     title = Column(String, nullable=False)
     content = Column(String, nullable=False)
     add_time = Column(DateTime, default=datetime.now, nullable=True)

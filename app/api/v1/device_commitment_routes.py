@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.db.database import get_db
-from app.schemas.device_commitment_schemas import DeviceCommitmentSchema, DeviceCommitmentCreateSchema, DeviceCommitmentUpdateSchema
-from app.services.device_commitment_services import get_device_commitment_by_id, create_device_commitment_service, update_device_commitment_service, get_all_device_commitments_device_service, list_all_device_commitments_service
+from app.schemas.device_commitment_schemas import DeviceCommitmentSchema, DeviceCommitmentCreateSchema, DeviceCommitmentUpdateSchema,DeleteDeviceCommitmentSchema
+from app.services.device_commitment_services import get_device_commitment_by_id, create_device_commitment_service, update_device_commitment_service, get_all_device_commitments_device_service, list_all_device_commitments_service, deactivate_device_commitments_services
 
 router = APIRouter(prefix="/device-commitments", tags=["Device Commitments"])
 
@@ -31,3 +31,7 @@ def update_device_commitment(device_commitment_id: int, device_commitment_data: 
     updated_device_commitment = update_device_commitment_service(device_commitment_data, device_commitment_id, db)
     return updated_device_commitment
     
+@router.delete("/{device_commitment_id}", response_model= DeleteDeviceCommitmentSchema)
+def deactivate_device_commitments(device_commitment_id: int, db: Session = Depends(get_db)):
+    deactivate = deactivate_device_commitments_services(device_commitment_id, db)
+    return deactivate

@@ -10,20 +10,12 @@ def get_object_by_id(model, object_id: int, db: Session):
     # Verilen model tablosunda id'ye göre kayıt getirir.
     # Yoksa 404 hatası döner.
     # """
-    obj = db.query(model).filter(model.id == object_id).first()
+    obj = db.query(model).filter(model.id == object_id,
+                                model.is_active == True).first()
     if not obj:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"{model.__name__} with id {object_id} not found"
-        )
-    return obj
-
-def get_all_ready_have_id(model, object_id: int, db: Session):
-    obj = db.query(model).filter(model.id == object_id).first()
-    if obj:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Campaign with id {object_id} already exists."
+            detail= f"{model.__name__} (ID: {object_id}) bulunamadı veya pasifleştirilmiş."
         )
     return obj
 
@@ -35,7 +27,7 @@ def validate_required_field(value):
     if not value:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=" aesrdfghjklis required"
+            detail="Area is required"
         )
     return value
 
@@ -76,9 +68,6 @@ def validate_non_negative_fields(model, data: dict):
         if value is not None and value < 0:
             raise ValueError(f"{col_name} cannot be negative. Given value: {value}")
         
-        
-
-
 
 def ensure_dict(data: Any) -> Dict:
 

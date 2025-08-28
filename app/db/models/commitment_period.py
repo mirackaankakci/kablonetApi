@@ -7,7 +7,7 @@ from datetime import datetime
 class CommitmentPeriod(Base):
     __tablename__ = "commitment_period"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, unique=True, index=True)
     period= Column(String, nullable=True)  # taahüt süresi (örneğin: "12 months")
     add_time = Column(DateTime, default=datetime.now, nullable=True)
     update_time = Column(DateTime, default=datetime.now, onupdate=datetime.now, nullable=True)

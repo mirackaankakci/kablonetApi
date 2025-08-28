@@ -71,3 +71,14 @@ class PackagesUpdateSchemas(BaseModel):
         json_encoders = {
             DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
+        
+        
+class DeletePackagesSchemas(BaseModel):
+    update_time: DateTime
+    is_active: bool
+
+    class Config:
+        from_attributes = True
+        json_encoders = {
+            DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
+        }

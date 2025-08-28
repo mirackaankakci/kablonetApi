@@ -6,7 +6,7 @@ from datetime import datetime
 class Devices(Base):
     __tablename__ = "devices"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, unique=True, index=True)
     device_name = Column(String, nullable=False)
     device_title = Column(String, nullable=False)  # e.g., 'router', 'modem'
     content = Column(String, nullable=True)

@@ -7,7 +7,7 @@ class TariffValue(Base):
     __tablename__ = "tariff_value"
     id = Column(Integer, primary_key=True, unique=True, index=True, nullable=False)
     name = Column(String, nullable=False, unique=True)
-    isActive = Column(Boolean, unique=False, index=True, nullable=False, default=True)
+    is_active = Column(Boolean, unique=False, index=True, nullable=False, default=True)
     add_date = Column(String, nullable=False)
     update_date = Column(String, nullable=False)
 

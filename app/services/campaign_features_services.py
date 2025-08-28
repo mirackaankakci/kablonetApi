@@ -1,10 +1,10 @@
-from app.crud.campaign_features_crud import get_campaign_features_by_id_from_db, create_campaign_features_from_db, update_campaign_features_in_db, list_all_campaign_features_from_db
+from app.crud.campaign_features_crud import get_campaign_features_by_id_from_db, create_campaign_features_from_db, update_campaign_features_in_db, list_all_campaign_features_from_db, deactivate_campaign_features_from_db
 from sqlalchemy.orm import Session
 from sqlalchemy import Integer, String
 from fastapi import APIRouter, Depends, HTTPException
 from app.db.models.campaign_features import CampaignFeatures
 from app.schemas.campaign_features_schemas import CampaignFeaturesSchema, CampaignFeaturesCreateSchema
-from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty, get_all_ready_have_id,ensure_dict
+from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict
 
 string_columns = [
         col.name for col in CampaignFeatures.__table__.columns
@@ -50,4 +50,9 @@ def list_all_campaign_features_service(db: Session):
     
     validate_list_not_empty(campaign_features)
     
+    return campaign_features
+
+def deactivate_campaign_features_services(campaign_features_id: int, db: Session):
+    get_object_by_id(CampaignFeatures, campaign_features_id, db)
+    campaign_features = deactivate_campaign_features_from_db(campaign_features_id, db)
     return campaign_features

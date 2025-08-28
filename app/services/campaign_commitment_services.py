@@ -1,10 +1,11 @@
-from  app.crud.campaign_commitment_crud import get_campaign_commitment_by_id_from_db, create_campaign_commitment_from_db, update_campaign_commitment_from_db, get_all_campaign_commitments_campaign_from_db, get_all_campaign_commitments_from_db
+from app.crud.campaign_commitment_crud import get_campaign_commitment_by_id_from_db, create_campaign_commitment_from_db, update_campaign_commitment_from_db, get_all_campaign_commitments_campaign_from_db, get_all_campaign_commitments_from_db, deactivate_campaign_commitments_from_db
+from app.schemas.campaign_commitment_schemas import CampaignCommitmentCreateSchema, CampaignCommitmentUpdateSchema
 from sqlalchemy.orm import Session
 from sqlalchemy import Integer, String
 from app.db.models.campaign_commitment import CampaignCommitment
 from app.db.models.Campaign import Campaign
 from app.db.models.commitment_period import CommitmentPeriod
-from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty, get_all_ready_have_id,ensure_dict
+from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict
 
 
 string_columns = [
@@ -22,7 +23,7 @@ def get_campaign_commitment_by_id(commitment_id: int, db: Session):
     get_object_by_id(CampaignCommitment, commitment_id, db)
     return get_campaign_commitment_by_id_from_db(commitment_id, db)
 
-def create_campaign_commitment_service(commitment_data: dict, db: Session):
+def create_campaign_commitment_service(commitment_data: CampaignCommitmentCreateSchema | dict, db: Session):
     commitment_data= ensure_dict(commitment_data)
     validate_list_not_empty(commitment_data)
     
@@ -39,7 +40,7 @@ def create_campaign_commitment_service(commitment_data: dict, db: Session):
     
     return create_campaign_commitment_from_db(commitment_data, db)
 
-def update_campaign_commitment_service(commitment_data: dict, commitment_id: int, db: Session):
+def update_campaign_commitment_service(commitment_id: int, commitment_data: CampaignCommitmentUpdateSchema | dict, db: Session):
     commitment_data= ensure_dict(commitment_data)
     validate_list_not_empty(commitment_data)
     
@@ -55,9 +56,14 @@ def update_campaign_commitment_service(commitment_data: dict, commitment_id: int
         if col_name in commitment_data and commitment_data.get(col_name) is not None:
             validate_min_length(commitment_data.get(col_name))
     
-    return update_campaign_commitment_from_db(commitment_data, commitment_id, db)
+    return update_campaign_commitment_from_db(commitment_id, commitment_data, db)
 
 def get_all_campaign_commitments_service(db: Session):
     campaign_commitments=get_all_campaign_commitments_from_db(db)
     validate_list_not_empty(campaign_commitments)
+    return campaign_commitments
+
+def deactivate_campaign_commitments_services(commitment_id: int, db: Session):
+    get_object_by_id(CampaignCommitment, commitment_id, db)
+    campaign_commitments = deactivate_campaign_commitments_from_db(commitment_id, db)
     return campaign_commitments

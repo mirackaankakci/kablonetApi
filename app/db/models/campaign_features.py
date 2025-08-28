@@ -7,7 +7,7 @@ from datetime import datetime
 class CampaignFeatures(Base):
     __tablename__ = "campaign_features"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, unique=True, index=True)
     pricing_HTML = Column(String, index=True)
     detail_HTML = Column(String, nullable=True)
     devices= Column(String, nullable=True)

@@ -88,3 +88,13 @@ class CampaignUpdateResponse(BaseModel):
         json_encoders = {
             DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
+        
+class DeleteCampaignSchema(BaseModel):
+    is_active: bool = True
+    update_time: DateTime
+
+    class Config:
+        from_attributes = True
+        json_encoders = {
+            DateTime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
+        }

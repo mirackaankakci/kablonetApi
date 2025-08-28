@@ -9,7 +9,7 @@ from app.db.models.campaign_features import CampaignFeatures
 class Campaign(Base):
     __tablename__ = "campaign"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, unique=True, index=True)
     name = Column(String, index=True)
     feature_table = Column(String, nullable=True)
     image_url = Column(String, nullable=True)

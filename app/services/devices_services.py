@@ -1,20 +1,27 @@
-from app.crud.devices_crud import get_device_by_id_from_db, create_device_from_db, update_device_from_db, list_all_devices_from_db
+from app.crud.devices_crud import get_device_by_id_from_db, create_device_from_db, update_device_from_db, list_all_devices_from_db, deactivate_devices_from_db, get_device_by_category_from_db
 from sqlalchemy.orm import Session
 from sqlalchemy import Integer, String
+from app.schemas.devices_schemas import DeviceCreateSchema
 from app.db.models.devices import Devices
 from app.db.models.MainCategory import MainCategory
-from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty, get_all_ready_have_id,ensure_dict
+from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict
 
 string_columns = [
         col.name for col in Devices.__table__.columns
         if isinstance(col.type, String)
     ]
 
+def get_device_by_category_services(main_category_id: int, db: Session):
+    get_object_by_id(MainCategory, main_category_id, db)
+    device_category = get_device_by_category_from_db(main_category_id, db)
+    validate_list_not_empty(device_category)
+    return device_category
+
 def get_device_by_id(device_id: int, db: Session):
     get_object_by_id(Devices, device_id, db)
     return get_device_by_id_from_db(device_id, db)
 
-def create_device_service(device_data: dict, db: Session):
+def create_device_service(device_data: DeviceCreateSchema | dict, db: Session):
     device_data = ensure_dict(device_data)
     validate_list_not_empty(device_data)
     
@@ -48,3 +55,9 @@ def list_all_devices_service(db: Session):
     validate_list_not_empty(devices)
     return devices
     
+
+    
+def deactivate_devices_services(device_id: int, db: Session):
+    get_object_by_id(Devices, device_id, db)
+    devices = deactivate_devices_from_db(device_id, db)
+    return devices

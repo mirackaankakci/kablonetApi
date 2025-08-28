@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.db.database import get_db
-from app.schemas.campaign_commitment_schemas import CampaignCommitmentCreateSchema, CampaignCommitmentUpdateSchema, CampaignCommitmentSchema
-from app.services.campaign_commitment_services import get_campaign_commitment_by_id, create_campaign_commitment_service, update_campaign_commitment_service, get_all_campaign_commitments_campaign_service, get_all_campaign_commitments_service
+from app.schemas.campaign_commitment_schemas import DeleteCampaignCommitmentSchema, CampaignCommitmentCreateSchema, CampaignCommitmentUpdateSchema, CampaignCommitmentSchema
+from app.services.campaign_commitment_services import get_campaign_commitment_by_id, create_campaign_commitment_service, update_campaign_commitment_service, get_all_campaign_commitments_campaign_service, get_all_campaign_commitments_service,deactivate_campaign_commitments_services
 
 router = APIRouter(prefix="/campaign-commitments", tags=["Campaign Commitments"])
 
-@router.get("/campaign-commitments-device", response_model=list[CampaignCommitmentSchema])
+@router.get("/campaign-commitments-campaign", response_model=list[CampaignCommitmentSchema])
 def list_all_campaign_commitments_campaign(campaign_id: int, db: Session = Depends(get_db)):
     commitments = get_all_campaign_commitments_campaign_service(campaign_id, db)
     return commitments
@@ -30,3 +30,8 @@ def add_campaign_commitment(commitment_data: CampaignCommitmentCreateSchema, db:
 def update_campaign_commitment(commitment_id: int, commitment_data: CampaignCommitmentUpdateSchema, db: Session = Depends(get_db)):
     updated_commitment = update_campaign_commitment_service(commitment_id, commitment_data, db)
     return updated_commitment
+
+@router.delete("/{commitment_id}", response_model= DeleteCampaignCommitmentSchema)
+def deactivate_campaign_commitments(commitment_id: int, db: Session = Depends(get_db)):
+    deactivate = deactivate_campaign_commitments_services(commitment_id, db)
+    return deactivate
