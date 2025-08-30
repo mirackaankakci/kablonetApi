@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Index
 from sqlalchemy.orm import relationship
 from app.db.base import Base
 from datetime import datetime
@@ -18,3 +18,8 @@ class MainCategory(Base):
     about_contents = relationship("About_Contents", back_populates="main_category")
     tariff_categories = relationship("TariffCategory", back_populates="main_category")###silinecek 
     packages = relationship("Packages", back_populates="main_category")
+    
+    __table_args__ = (
+        
+        Index('idx_unique_active_main_category_name', 'name', unique=True, postgresql_where=(is_active == True)),
+    )

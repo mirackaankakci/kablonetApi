@@ -4,7 +4,7 @@ from sqlalchemy import Integer, String
 from app.schemas.devices_schemas import DeviceCreateSchema
 from app.db.models.devices import Devices
 from app.db.models.MainCategory import MainCategory
-from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict
+from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict, validate_non_negative_fields, validate_required_keys
 
 string_columns = [
         col.name for col in Devices.__table__.columns
@@ -25,6 +25,10 @@ def create_device_service(device_data: DeviceCreateSchema | dict, db: Session):
     device_data = ensure_dict(device_data)
     validate_list_not_empty(device_data)
     
+    validate_non_negative_fields(Devices, device_data)
+    validate_required_keys(Devices, device_data)
+    # validate_datetime_fields(Devices, device_data, allow_none=True)
+    
     main_category_id = validate_required_field(device_data.get("main_category_id"))
     get_object_by_id(MainCategory, main_category_id, db)
     
@@ -39,6 +43,10 @@ def update_device_service(device_data: dict, device_id: int, db: Session):
     device_data = ensure_dict(device_data)
     validate_list_not_empty(device_data)
     get_object_by_id(Devices, device_id, db)
+    
+    validate_non_negative_fields(Devices, device_data)
+    validate_required_keys(Devices, device_data)
+    # validate_datetime_fields(Devices, device_data, allow_none=True)
     
     main_category_id = validate_required_field(device_data.get("main_category_id"))
     get_object_by_id(MainCategory, main_category_id, db)    

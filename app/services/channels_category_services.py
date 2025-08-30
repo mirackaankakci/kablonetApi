@@ -3,8 +3,7 @@ from sqlalchemy import String
 from app.db.models.channel_category import ChannelCategory
 from app.schemas.channels_category_schemas import ChannelCategoryCreateSchemas
 from app.crud.channels_category_crud import get_channel_category_by_id_from_db, create_channel_category_from_db, update_channel_category_in_db, list_all_channel_category_from_db, deactivate_channel_category_from_db
-from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict
-
+from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict, validate_non_negative_fields, validate_required_keys
 string_columns = [
         col.name for col in ChannelCategory.__table__.columns
         if isinstance(col.type, String)
@@ -18,6 +17,11 @@ def create_channel_category_services(channel_category_data: ChannelCategoryCreat
     channel_category_data = ensure_dict(channel_category_data)
     validate_list_not_empty(channel_category_data)
     
+    validate_non_negative_fields(ChannelCategory, channel_category_data)
+    validate_required_keys(ChannelCategory, channel_category_data)
+    validate_datetime_fields(ChannelCategory, channel_category_data, allow_none=True)
+    # validate_unique_field(model=ChannelCategory, data=channel_category_data ,db=db)
+    
     for col_name in string_columns:
         value = channel_category_data.get(col_name)
         if isinstance(value, str):  # sadece string ise kontrol et
@@ -29,6 +33,11 @@ def update_channel_category_services(channel_category_data: dict, channel_catego
     channel_category_data = ensure_dict(channel_category_data)
     validate_list_not_empty(channel_category_data)
     get_object_by_id(ChannelCategory, channel_category_id, db)
+    
+    validate_non_negative_fields(ChannelCategory, channel_category_data)
+    validate_required_keys(ChannelCategory, channel_category_data)
+    validate_datetime_fields(ChannelCategory, channel_category_data, allow_none=True)
+    # validate_unique_field(model=ChannelCategory, data=channel_category_data, exclude_id=channel_category_id ,db=db)
     
     for col_name in string_columns:
         value = channel_category_data.get(col_name)

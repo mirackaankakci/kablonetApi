@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Index
 from sqlalchemy.orm import relationship
 from app.db.base import Base
 from datetime import datetime
@@ -16,3 +16,7 @@ class ChannelCategory(Base):
     
     #kanallar ile ilişkisi var
     channels= relationship("Channels", back_populates="channel_category")
+    
+    __table_args__ = (
+        Index('idx_unique_active_channel_category_name', 'name', unique=True, postgresql_where=(is_active == True)),
+    )

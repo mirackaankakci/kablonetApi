@@ -5,7 +5,7 @@ from app.schemas.device_commitment_schemas import DeviceCommitmentCreateSchema
 from app.db.models.device_commitment import DeviceCommitment
 from app.db.models.devices import Devices
 from app.db.models.commitment_period import CommitmentPeriod
-from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict
+from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict, validate_non_negative_fields, validate_required_keys
 
 
 string_columns = [
@@ -27,6 +27,10 @@ def create_device_commitment_service(device_commitment_data: DeviceCommitmentCre
     device_commitment_data = ensure_dict(device_commitment_data)
     validate_list_not_empty(device_commitment_data)
     
+    validate_non_negative_fields(DeviceCommitment, device_commitment_data)
+    validate_required_keys(DeviceCommitment, device_commitment_data)
+    # validate_datetime_fields(DeviceCommitment, device_commitment_data, allow_none=True)
+    
     commitment_period_id = validate_required_field(
         device_commitment_data.get("commitment_period_id"))
     get_object_by_id(CommitmentPeriod, commitment_period_id, db)
@@ -46,6 +50,10 @@ def update_device_commitment_service(device_commitment_data: dict, device_commit
     device_commitment_data = ensure_dict(device_commitment_data)
     get_object_by_id(DeviceCommitment, device_commitment_id, db)
     validate_list_not_empty(device_commitment_data)
+    
+    validate_non_negative_fields(DeviceCommitment, device_commitment_data)
+    validate_required_keys(DeviceCommitment, device_commitment_data)
+    # validate_datetime_fields(DeviceCommitment, device_commitment_data, allow_none=True)
     
     commitment_period_id = validate_required_field(
         device_commitment_data.get("commitment_period_id"))

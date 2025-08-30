@@ -4,7 +4,7 @@ from app.schemas.packages_features_schemas import PackagesFeaturesCreateSchemas
 from app.db.models.packages_features import PackagesFeatures
 from app.db.models.packages import Packages
 from app.crud.packages_features_crud import get_packages_features_by_id_from_db, create_packages_features_from_db, update_packages_features_from_db, list_all_packages_features_from_db, get_packages_features_by_packages_from_db, deactivate_packages_features_from_db
-from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict
+from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict, validate_non_negative_fields, validate_required_keys
 
 string_columns = [
         col.name for col in PackagesFeatures.__table__.columns
@@ -19,6 +19,10 @@ def get_packages_features_services(packages_features_id: int, db: Session):
 def create_packages_features_services(packages_features_data: PackagesFeaturesCreateSchemas | dict, db: Session):
     packages_features_data = ensure_dict(packages_features_data)
     validate_list_not_empty(packages_features_data)
+    
+    validate_non_negative_fields(PackagesFeatures, packages_features_data)
+    validate_required_keys(PackagesFeatures, packages_features_data)
+    # validate_datetime_fields(PackagesFeatures, packages_features_data, allow_none=True)
     
     packages_id = validate_required_field(
         packages_features_data.get("packages_id")
@@ -37,6 +41,10 @@ def update_packages_features_services(packages_features_id: int, packages_featur
     packages_features_data = ensure_dict(packages_features_data)
     validate_list_not_empty(packages_features_data)
     get_object_by_id(PackagesFeatures, packages_features_id, db)
+    
+    validate_non_negative_fields(PackagesFeatures, packages_features_data)
+    validate_required_keys(PackagesFeatures, packages_features_data)
+    # validate_datetime_fields(PackagesFeatures, packages_features_data, allow_none=True)
     
     packages_id = validate_required_field(
         packages_features_data.get("packages_id")

@@ -5,7 +5,7 @@ from sqlalchemy import Integer, String
 from app.db.models.campaign_commitment import CampaignCommitment
 from app.db.models.Campaign import Campaign
 from app.db.models.commitment_period import CommitmentPeriod
-from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict
+from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict, validate_non_negative_fields, validate_required_keys
 
 
 string_columns = [
@@ -27,6 +27,11 @@ def create_campaign_commitment_service(commitment_data: CampaignCommitmentCreate
     commitment_data= ensure_dict(commitment_data)
     validate_list_not_empty(commitment_data)
     
+    validate_non_negative_fields(CampaignCommitment,commitment_data)
+    validate_required_keys(CampaignCommitment, commitment_data)
+    # validate_datetime_fields(CampaignCommitment, commitment_data, allow_none=True)
+
+    
     commitment_period_id=validate_required_field(commitment_data.get("commitment_period_id"))
     get_object_by_id(CommitmentPeriod, commitment_period_id, db)
     
@@ -43,6 +48,11 @@ def create_campaign_commitment_service(commitment_data: CampaignCommitmentCreate
 def update_campaign_commitment_service(commitment_id: int, commitment_data: CampaignCommitmentUpdateSchema | dict, db: Session):
     commitment_data= ensure_dict(commitment_data)
     validate_list_not_empty(commitment_data)
+    
+    validate_non_negative_fields(CampaignCommitment, commitment_data)
+    validate_required_keys(CampaignCommitment, commitment_data)
+    # validate_datetime_fields(CampaignCommitment, commitment_data, allow_none=True)
+    
     
     commitment_period_id=validate_required_field(commitment_data.get("commitment_period_id"))
     get_object_by_id(CommitmentPeriod, commitment_period_id, db)

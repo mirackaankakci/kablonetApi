@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import String
 from app.schemas.commitment_period_schemas import CommitmentPeriodCreateSchema
 from app.db.models.commitment_period import CommitmentPeriod
-from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict
+from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict, validate_non_negative_fields, validate_required_keys
 
 string_columns = [
         col.name for col in CommitmentPeriod.__table__.columns
@@ -18,6 +18,10 @@ def create_commitment_period_service(commitment_period_data: CommitmentPeriodCre
     commitment_period_data = ensure_dict(commitment_period_data)
     validate_list_not_empty(commitment_period_data)
     
+    validate_non_negative_fields(CommitmentPeriod, commitment_period_data)
+    validate_required_keys(CommitmentPeriod, commitment_period_data)
+    # validate_datetime_fields(CommitmentPeriod, commitment_period_data, allow_none=True)
+    
     for col_name in string_columns:
         value = commitment_period_data.get(col_name)
         if isinstance(value, str):  # sadece string ise kontrol et
@@ -29,6 +33,10 @@ def update_commitment_period_service(commitment_period_data: dict, commitment_pe
     commitment_period_data = ensure_dict(commitment_period_data)
     validate_list_not_empty(commitment_period_data)
     get_object_by_id(CommitmentPeriod, commitment_period_id, db)
+    
+    validate_non_negative_fields(CommitmentPeriod, commitment_period_data)
+    validate_required_keys(CommitmentPeriod, commitment_period_data)
+    # validate_datetime_fields(CommitmentPeriod, commitment_period_data, allow_none=True)
     
     for col_name in string_columns:
         value = commitment_period_data.get(col_name)

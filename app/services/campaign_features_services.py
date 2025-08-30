@@ -4,7 +4,7 @@ from sqlalchemy import Integer, String
 from fastapi import APIRouter, Depends, HTTPException
 from app.db.models.campaign_features import CampaignFeatures
 from app.schemas.campaign_features_schemas import CampaignFeaturesSchema, CampaignFeaturesCreateSchema
-from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict
+from app.services.util import get_object_by_id, validate_required_field,validate_datetime_fields, validate_min_length, validate_list_not_empty ,ensure_dict, validate_non_negative_fields, validate_required_keys
 
 string_columns = [
         col.name for col in CampaignFeatures.__table__.columns
@@ -22,6 +22,10 @@ def create_campaign_features_service(campaign_features_data: CampaignFeaturesCre
     campaign_features_data= ensure_dict(campaign_features_data)
     validate_list_not_empty(campaign_features_data)
     
+    validate_non_negative_fields(CampaignFeatures, campaign_features_data)
+    validate_required_keys(CampaignFeatures, campaign_features_data)
+    # validate_datetime_fields(CampaignFeatures, campaign_features_data, allow_none=True)
+    
     for col_name in string_columns:
         value = campaign_features_data.get(col_name)
         if isinstance(value, str):  # sadece string ise kontrol et
@@ -32,6 +36,11 @@ def create_campaign_features_service(campaign_features_data: CampaignFeaturesCre
 def update_campaign_features_service(campaign_features_data: dict, campaign_features_id: int, db: Session):
     campaign_features_data= ensure_dict(campaign_features_data)
     validate_list_not_empty(campaign_features_data)
+    
+    validate_non_negative_fields(CampaignFeatures, campaign_features_data)
+    validate_required_keys(CampaignFeatures, campaign_features_data)
+    # validate_datetime_fields(CampaignFeatures, campaign_features_data, allow_none=True)
+    
     get_object_by_id(CampaignFeatures, campaign_features_id, db)
     
     for col_name in string_columns:

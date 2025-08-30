@@ -4,7 +4,7 @@ from sqlalchemy import Integer, String
 from app.db.models.about_contents import About_Contents
 from app.db.models.MainCategory import MainCategory
 from app.schemas.about_contents_schemas import AboutContentsCreateSchema
-from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty, ensure_dict
+from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty, ensure_dict, validate_non_negative_fields, validate_required_keys
 
 
 string_columns = [
@@ -33,6 +33,11 @@ def create_about_content_service(content_data: AboutContentsCreateSchema | dict,
     content_data= ensure_dict(content_data)
     validate_list_not_empty(content_data)
     
+    validate_non_negative_fields(About_Contents, content_data)
+    validate_required_keys(About_Contents, content_data)
+    # validate_datetime_fields(About_Contents, content_data, allow_none=True)
+    
+    
     main_category_id=validate_required_field(content_data.get("main_category_id"))
     get_object_by_id(MainCategory, main_category_id, db) 
     for col_name in string_columns:
@@ -53,6 +58,11 @@ def get_all_about_contents_by_category_service(main_category_id: int, db: Sessio
 def update_about_content_service(content_id: int, content_data: dict, db: Session):
     content_data= ensure_dict(content_data)
     validate_list_not_empty(content_data)
+    
+    validate_non_negative_fields(About_Contents, content_data)
+    validate_required_keys(About_Contents ,content_data)
+    # validate_datetime_fields(About_Contents, content_data, allow_none=True)
+    
     
     get_object_by_id(About_Contents, content_id, db)
     

@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from sqlalchemy import Integer, String
 from app.db.models import channel_list
 from app.schemas.channel_list_schema import ChannelListCreate
-from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict
+from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict,validate_non_negative_fields, validate_required_keys
 
 string_columns = [
     col.name for col in channel_list.__table__.columns
@@ -28,6 +28,11 @@ def create_channel_list_service(channel_data: ChannelListCreate | dict, db: Sess
     # BaseModel ise dict'e çevir
     channel_data = ensure_dict(channel_data)
     validate_list_not_empty(channel_data)
+    
+    validate_non_negative_fields(channel_list, channel_data)
+    validate_required_keys(channel_list, channel_data)
+    # validate_datetime_fields(channel_list, channel_data, allow_none=True)
+    # validate_unique_field(model=channel_list, data=channel_data ,db=db)
 
     for col_name in string_columns:
         value = channel_data.get(col_name)
@@ -40,6 +45,10 @@ def update_channel_list_service(channel_data: dict ,channel_id: int, db: Session
         # dict'e çevir
     channel_data = ensure_dict(channel_data)  # Pydantic objesini dict’e çevir
     validate_list_not_empty(channel_data)
+    
+    validate_non_negative_fields(channel_list, channel_data)
+    validate_required_keys(channel_list, channel_data)
+    # validate_datetime_fields(channel_list, channel_data, allow_none=True)
     
     get_object_by_id(channel_list, channel_id, db)
     

@@ -8,7 +8,7 @@ class CampaignFeatures(Base):
     __tablename__ = "campaign_features"
 
     id = Column(Integer, primary_key=True, unique=True, index=True)
-    pricing_HTML = Column(String, index=True)
+    pricing_HTML = Column(String, index=True, nullable=False)
     detail_HTML = Column(String, nullable=True)
     devices= Column(String, nullable=True)
     add_time = Column(DateTime, default=datetime.now, nullable=True)

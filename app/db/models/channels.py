@@ -15,7 +15,7 @@ class Channels(Base):
     update_time = Column(DateTime, default=datetime.now, onupdate=datetime.now, nullable=True)
     
     #kanal kategori id si gelecek
-    channel_category_id = Column(Integer, ForeignKey('channel_category.id'), nullable=True)
+    channel_category_id = Column(Integer, ForeignKey('channel_category.id'), nullable=False)
     channel_category = relationship("ChannelCategory", back_populates="channels")
     
     #paket kanal ile ilişkisi var

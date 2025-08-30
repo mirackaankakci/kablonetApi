@@ -13,7 +13,7 @@ class Campaign(Base):
     name = Column(String, index=True)
     feature_table = Column(String, nullable=True)
     image_url = Column(String, nullable=True)
-    is_active = Column(Boolean, default=True)
+    is_active = Column(Boolean, default=True, nullable=False)
     subheading = Column(String, nullable=True)
     add_time = Column(DateTime, default=datetime.now, nullable=True)
     update_time = Column(DateTime, default=datetime.now, onupdate=datetime.now, nullable=True)

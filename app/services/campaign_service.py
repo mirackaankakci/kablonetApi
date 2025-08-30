@@ -5,7 +5,7 @@ from app.schemas.campaign_schema import CampaignCreateSchema
 from app.db.models.campaign_features import CampaignFeatures
 from app.db.models.Campaign import Campaign
 from app.db.models.MainCategory import MainCategory
-from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict
+from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict, validate_non_negative_fields, validate_required_keys
     
 
 # Minimum karakter sayısı (istersen her kolona özel de yapabilirsin)
@@ -43,6 +43,10 @@ def create_campaign_service(campaign_data: CampaignCreateSchema | dict, db: Sess
     
     # Boş veri kontrolü
     validate_list_not_empty(campaign_data)  # Aşağıda düzelttik
+    
+    validate_non_negative_fields(Campaign, campaign_data)
+    validate_required_keys(Campaign, campaign_data)
+    # validate_datetime_fields(Campaign, campaign_data, allow_none=True)
 
     # Zorunlu alanlar: campaign_features_id
     campaign_features_id = validate_required_field(
@@ -72,6 +76,11 @@ def update_campaign_service(campaign_data: dict, campaign_id: int, db: Session):
     campaign_data = ensure_dict(campaign_data)
 
     validate_list_not_empty(campaign_data)
+    
+    validate_non_negative_fields(Campaign, campaign_data)
+    validate_required_keys(Campaign, campaign_data)
+    # validate_datetime_fields(Campaign, campaign_data, allow_none=True)
+    
     get_object_by_id(Campaign, campaign_id, db)
 
     # campaign_features kontrolü

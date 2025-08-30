@@ -4,7 +4,7 @@ from app.schemas.channels_schemas import ChannelsCreateSchemas
 from app.db.models.channels import Channels
 from app.db.models.channel_category import ChannelCategory
 from app.crud.channels_crud import get_channels_by_id_from_db, create_channels_from_db, update_channels_from_db, list_all_channels_from_db, get_channels_by_category_id_from_db, deactivate_channels_from_db
-from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict
+from app.services.util import get_object_by_id, validate_required_field, validate_min_length, validate_list_not_empty ,ensure_dict,validate_non_negative_fields, validate_required_keys
 
 string_columns = [
         col.name for col in Channels.__table__.columns
@@ -18,6 +18,11 @@ def get_channels_services(channels_id: int, db: Session):
 def create_channels_services(channels_data: ChannelsCreateSchemas | dict, db: Session):
     channels_data = ensure_dict(channels_data)
     validate_list_not_empty(channels_data)
+    
+    validate_non_negative_fields(Channels, channels_data)
+    validate_required_keys(Channels, channels_data)
+    # validate_datetime_fields(Channels, channels_data, allow_none=True)
+    
     
     channel_category_id = validate_required_field(
         channels_data.get("channel_category_id")
@@ -35,6 +40,10 @@ def update_channels_services(channels_id: int, channels_data: dict, db: Session)
     channels_data = ensure_dict(channels_data)
     validate_list_not_empty(channels_data)
     get_object_by_id(Channels, channels_id,db)
+    
+    validate_non_negative_fields(Channels, channels_data)
+    validate_required_keys(Channels, channels_data)
+    # validate_datetime_fields(Channels, channels_data, allow_none=True)
     
     channel_category_id = validate_required_field(
         channels_data.get("channel_category_id"))

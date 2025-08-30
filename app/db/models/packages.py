@@ -10,7 +10,7 @@ class Packages(Base):
     title= Column(String, nullable=False)
     content= Column(String, nullable=False)
     price=Column(Integer, nullable=False)
-    detail=Column(String, nullable=False)
+    detail=Column(String, nullable=True)
     
     is_active = Column(Boolean, index=True, nullable=False, default=True)
     add_time = Column(DateTime, default=datetime.now, nullable=True)
