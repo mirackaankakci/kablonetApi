@@ -1,5 +1,6 @@
 from .MainCategory import MainCategory
 from .Campaign import Campaign
+from .User import User
 # varsa diğer modelleri de buraya ekle
 
 from .about_contents import About_Contents

@@ -4,3 +4,6 @@ sqlalchemy[standard]
 psycopg2-binary[standard]
 python-dotenv[standard]
 sqlalchemy.orm[standard]
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart

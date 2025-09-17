@@ -34,6 +34,8 @@ def create_main_category_from_db(main_category_data, db: Session):
         else:
             raise HTTPException(400, detail="Benzersizlik hatası.")
 
+
+
 def update_main_category_in_db(main_category_data, main_category_id: int, db: Session):
     db: Session = SessionLocal()
     main_category = db.query(MainCategory).filter(MainCategory.id == main_category_id).first()

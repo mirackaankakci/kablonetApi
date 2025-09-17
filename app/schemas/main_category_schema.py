@@ -22,6 +22,13 @@ class MainCategorySchema(BaseModel):
         from_attributes = True
 
 
+class MainCategoryCreateRequest(BaseModel):
+    name: str
+    is_active: bool = True  # Varsayılan değer
+    
+    class Config:
+        from_attributes = True
+
 class MainCategoryCreateResponse(BaseModel):
     name: str
     is_active: bool = True  # Varsayılan değer
